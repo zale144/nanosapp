@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+package adcampaign;
+
+service AdCampaignService {
+    rpc GetAll(Request) returns (Response) {}
+}
+
+message Request {
+    string token = 1;
+}
+
+message Response {
+    repeated AdCampaign AdCampaigns = 1;
+}
+
+message AdCampaign {
+    int64 ID = 1;
+    string Name = 2;
+    string Goal = 3;
+    int64 TotalBudget = 4;
+    string Status = 5;
+    Platforms Platforms = 6;
+}
+
+message Platforms {
+    Platform Facebook = 1;
+    Platform Instagram = 2;
+    Platform Google = 3;
+}
+
+message Platform {
+    string Status = 1;
+    int64 TotalBudget = 2;
+    int64 RemainingBudget = 3;
+    int64 StartDate = 4;
+    int64 EndDate = 5;
+    TargetAudiance TargetAudiance = 6;
+    Creatives Creatives = 7;
+    Insights Insights = 8;
+}
+
+message TargetAudiance {
+    repeated string Languages = 1;
+    repeated string Genders = 2;
+    repeated int64 AgeRange = 3;
+    repeated string Locations = 4;
+    repeated string KeyWords = 5;
+    repeated string Interests = 6;
+}
+
+message Creatives {
+    string Header = 1;
+    string Header1 = 2;
+    string Header2 = 3;
+    string Description = 4;
+    string URL = 5;
+    string Image = 6;
+}
+
+message Insights {
+    int64 Impressions = 1;
+    int64 Clicks = 2;
+    int64 WebsiteVisits = 3;
+    double CostPerClick = 4;
+    double ClickThroughRate = 5;
+    double AdvancedKpi1 = 6;
+    double AdvancedKpi2 = 7;
+    double NanosScore = 8;
+}
