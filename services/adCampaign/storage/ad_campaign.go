@@ -18,7 +18,7 @@ const (
 	COLLECTION = "ad_campaigns"
 )
 
-// Establish a connection to database
+// Connect establishes a connection to the database
 func (m *AdCampaignStorage) Connect() {
 	session, err := mgo.Dial(m.Server)
 	if err != nil {
@@ -27,15 +27,20 @@ func (m *AdCampaignStorage) Connect() {
 	DB = session.DB(m.Database)
 }
 
-// Find list of ad campaigns
+// GetAll fetches a list of ad campaigns
 func (m *AdCampaignStorage) GetAll() ([]model.AdCampaign, error) {
-	var movies []model.AdCampaign
-	err :=DB.C(COLLECTION).Find(bson.M{}).All(&movies)
-	return movies, err
+	var adCampaigns []model.AdCampaign
+	err := DB.C(COLLECTION).Find(bson.M{}).All(&adCampaigns)
+	return adCampaigns, err
 }
 
-// Insert an ad campaign into database
+// Insert adds an ad campaign into the database
 func (m *AdCampaignStorage) Insert(adCampaign model.AdCampaign) error {
 	err := DB.C(COLLECTION).Insert(&adCampaign)
 	return err
+}
+
+// DeleteAll removes all ad campaigns
+func (m *AdCampaignStorage) DeleteAll() error {
+	return DB.C(COLLECTION).DropCollection()
 }

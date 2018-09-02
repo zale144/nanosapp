@@ -2,32 +2,30 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   namespace: default
-  name: accountdepl
+  name: adcampaigndepl
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: account
+        app: adcampaign
     spec:
       containers:
-      - name: account
+      - name: adcampaign
         command: [
-      	  "./nanosapp.account",
+      	  "./nanosapp.adCampaign",
       	  "--server_address=0.0.0.0:8080",
       	  "--broker_address=0.0.0.0:10001",
       	  "--selector=static",
       	]
-        image: nanosapp/account:v0.0.1
+        image: nanosapp/adcampaign:v0.0.1
         env:
-          - name: DB_USER
-            value: "postgres"
-          - name: DB_PASS
-            value: ""
+          - name: DB_SERVER
+            value: "mongo:27017"
           - name: DB_NAME
-            value: "nanoaccount"
+            value: "ad_campaigns"
         ports:
         - containerPort: 8080
           name: srvc-port
         - containerPort: 8081
-          name: account-port
+          name: adcampaign-port

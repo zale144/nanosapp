@@ -21,9 +21,9 @@ type Platform struct {
 	RemainingBudget int64    	   `bson:"remaining_budget"`
 	StartDate       int64  		   `bson:"start_date"`
 	EndDate         int64  		   `bson:"end_date"`
-	TargetAudiance  TargetAudiance `bson:"target_audiance"`
-	Creatives 		Creatives	   `bson:"creatives"`
-	Insights 		Insights	   `bson:"insights"`
+	TargetAudiance  *TargetAudiance `bson:"target_audiance"`
+	Creatives 		*Creatives	   `bson:"creatives"`
+	Insights 		*Insights	   `bson:"insights"`
 }
 
 type TargetAudiance struct {

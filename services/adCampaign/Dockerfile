@@ -2,7 +2,7 @@ FROM golang:alpine AS builder
 
 RUN apk update && apk add git && apk add ca-certificates
 
-WORKDIR /go/src/github.com/zale144/nanosapp/account
+WORKDIR /go/src/github.com/zale144/nanosapp/adCampaign
 
 COPY . .
 
@@ -14,7 +14,7 @@ RUN set -x && \
 	echo "vendor:" && \
 	dep status
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o nanosapp.account .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o nanosapp.adCampaign .
 
 RUN apk update && \
     apk upgrade && \
@@ -24,6 +24,6 @@ RUN apk update && \
 FROM scratch
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=builder /go/src/github.com/zale144/nanosapp/account .
+COPY --from=builder /go/src/github.com/zale144/nanosapp/adCampaign .
 
-CMD ["./nanosapp.account"]
+CMD ["./nanosapp.adCampaign"]

@@ -2,26 +2,23 @@ package main
 
 import (
 	"log"
-	"flag"
-
 	"github.com/micro/go-micro"
 	k8s "github.com/micro/kubernetes/go/micro"
 	proto "github.com/zale144/nanosapp/services/account/proto"
 	"github.com/zale144/nanosapp/services/account/db"
 	"github.com/zale144/nanosapp/services/account/handler"
-)
-
-var (
-	dbInfo = flag.String("db-info", "postgres://postgres:admin@localhost/nanoaccount?sslmode=disable", "database connection string")
+	"os"
+	"fmt"
 )
 
 func main() {
 
-	flag.Parse()
+	dbUser := os.Getenv("DB_USER")
+	dbPass := os.Getenv("DB_PASS")
+	dbName := os.Getenv("DB_NAME")
+	dbConnString := fmt.Sprintf("postgres://%s:%s@db/%s?sslmode=disable", dbUser, dbPass, dbName)
 
-	db.DBInfo = *dbInfo
-
-	log.Println(db.DBInfo)
+	db.DBInfo = dbConnString
 
 	err := db.InitDB()
 	if err != nil {

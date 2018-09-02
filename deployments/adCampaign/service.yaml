@@ -2,15 +2,15 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: account
+  name: adcampaign
   namespace: default
   labels:
-      app: account
+      app: adCampaign
 spec:
   type: NodePort
   ports:
   - protocol: "TCP"
     port: 8081
-    nodePort: 30002
+    nodePort: 30003
   selector:
-      app: account
+      app: adCampaign
