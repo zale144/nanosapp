@@ -17,7 +17,12 @@ var (
 
 func main() {
 
+	flag.Parse()
+
 	db.DBInfo = *dbInfo
+
+	log.Println(db.DBInfo)
+
 	err := db.InitDB()
 	if err != nil {
 		log.Fatalf("cannot initialize db: %v", err)

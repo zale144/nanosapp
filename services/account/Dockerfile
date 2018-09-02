@@ -6,11 +6,12 @@ WORKDIR /go/src/github.com/zale144/nanosapp/account
 
 COPY . .
 
-#RUN set -x && \
-#	go get github.com/golang/dep/cmd/dep && \
-#	which dep && \
-#	date && \
-#	dep ensure -v && \
+RUN set -x && \
+	go get github.com/golang/dep/cmd/dep && \
+	which dep && \
+	date && \
+	dep ensure -v # && \
+
 #	echo "vendor:" && \
 #	dep status
 

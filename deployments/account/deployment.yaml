@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: default
+  name: accountdepl
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: account
+    spec:
+      containers:
+      - name: account
+        command: [
+      	  "./nanosapp.account",
+      	  "-db-info",
+          "postgres://postgres:@db/nanoaccount?sslmode=disable",
+      	  "--server_address=0.0.0.0:8080",
+      	  "--broker_address=0.0.0.0:10001",
+      	  "--selector=static",
+      	]
+        image: nanosapp/account:v0.0.1
+        ports:
+        - containerPort: 8080
+          name: srvc-port
+        - containerPort: 8081
+          name: account-port
