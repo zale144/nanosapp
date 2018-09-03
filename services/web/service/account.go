@@ -11,6 +11,7 @@ import (
 	"github.com/dchest/authcookie"
 	"github.com/zale144/nanosapp/services/web/client"
 	"github.com/zale144/nanosapp/services/web/commons"
+	"github.com/zale144/nanosapp/services/web/model"
 )
 
 type AccountService struct {}
@@ -30,11 +31,7 @@ func (as AccountService) Login(c echo.Context) error {
 		return echo.ErrUnauthorized
 	}
 	account, err := client.AccountClient{}.Get(username)
-	if err != nil {
-		log.Println(err)
-		return err
-	}
-	if account == nil {
+	if err != nil || account == nil {
 		err := fmt.Errorf("the account with provided username does not exist")
 		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
 		return err
@@ -90,32 +87,32 @@ func loginApi(username string) (string, error) {
 // Register handles requests to register a new account
 func (as AccountService) Register(c echo.Context) error {
 
-	username,
-	password,
-	confirmPassword :=
-		c.FormValue("username"),
-		c.FormValue("password"),
-		c.FormValue("confirmPassword")
+	acc := new(model.Account)           //initialize  struct Account
+	if err := c.Bind(acc); err != nil { //get and bind data from request to struct Account
+		err := fmt.Errorf("Invalid JSON payload")
+		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
+		return err
+	}
 
-	if username == "" {
+	if acc.Username == "" {
 		err := fmt.Errorf("Username is required")
 		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
 		return err
 	}
-	if password == "" {
+	if acc.Password == "" {
 		err := fmt.Errorf("Password is required")
 		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
 		return err
 	}
-	if password != confirmPassword {
+	if acc.Password != acc.ConfirmPassword {
 		err := fmt.Errorf("Passwords don't match")
 		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
 		return err
 	}
 	// encrypt the password
-	password = commons.CryptPrivate(password, commons.CRYPT_SETTING)
+	acc.Password = commons.CryptPrivate(acc.Password, commons.CRYPT_SETTING)
 	// use the account microservice client to add a new account to it's db
-	accountResponse, err := client.AccountClient{}.Add(username, password)
+	accountResponse, err := client.AccountClient{}.Add(acc.Username, acc.Password)
 	if err != nil {
 		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
 		return err
@@ -127,7 +124,7 @@ func (as AccountService) Register(c echo.Context) error {
 	}
 
 	// login to api
-	token, err := loginApi(username)
+	token, err := loginApi(acc.Username)
 	if err != nil {
 		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
 		return err
