@@ -8,7 +8,6 @@ import (
 	"github.com/zale144/nanosapp/services/adCampaign/storage"
 	"io/ioutil"
 	"encoding/json"
-	"fmt"
 )
 
 // AdCampaignService ...
@@ -38,7 +37,7 @@ func (srv *AdCampaignService) DataImport() error {
 		return err
 	}
 	// unmarshal the json data into a list of AdCampaign structs
-	adCampaigns := []proto.AdCampaign{}
+	adCampaigns := []model.AdCampaign{}
 	err = json.Unmarshal(data, &adCampaigns)
 	if err != nil {
 		log.Println(err)
@@ -50,12 +49,9 @@ func (srv *AdCampaignService) DataImport() error {
 		log.Println(err)
 		// no return here
 	}
-	// convert the proto type into the model type
-	modelAdCampaigns := srv.mapAdCampaignsToModel(adCampaigns...)
-	fmt.Println(len(modelAdCampaigns))
 	// insert the new data into the database
-	for _, v := range modelAdCampaigns {
-		err = srv.Storage.Insert(*v)
+	for _, v := range adCampaigns {
+		err = srv.Storage.Insert(v)
 		if err != nil {
 			log.Println(err)
 			// no return here
@@ -180,132 +176,6 @@ func (srv *AdCampaignService) mapAdCampaignsToProto(adCampaigns ...model.AdCampa
 		gog.Insights = gogin
 
 		ac.Platforms = &proto.Platforms{
-			Facebook: fb,
-			Instagram: ins,
-			Google: gog,
-		}
-
-		grpcAdCampaigns = append(grpcAdCampaigns, ac)
-
-	}
-	return grpcAdCampaigns
-}
-
-// mapAdCampaignsToModel converts the proto.AdCampaign to model.AdCampaign type
-func (srv *AdCampaignService) mapAdCampaignsToModel(adCampaigns ...proto.AdCampaign) []*model.AdCampaign {
-	grpcAdCampaigns := []*model.AdCampaign{}
-	for _, c := range adCampaigns {
-		ac := &model.AdCampaign{
-			ID:       c.ID,
-			Name:    c.Name,
-			Goal:      c.Goal,
-			TotalBudget: c.TotalBudget,
-			Status: c.Status,
-		}
-		fb := &model.Platform{
-			Status: c.Platforms.Facebook.Status,
-			TotalBudget: c.Platforms.Facebook.TotalBudget,
-			RemainingBudget: c.Platforms.Facebook.RemainingBudget,
-			StartDate: c.Platforms.Facebook.StartDate,
-			EndDate: c.Platforms.Facebook.EndDate,
-
-		}
-		fta := &model.TargetAudiance{
-			Languages: c.Platforms.Facebook.TargetAudiance.Languages,
-			Genders: c.Platforms.Facebook.TargetAudiance.Genders,
-			AgeRange: c.Platforms.Facebook.TargetAudiance.AgeRange,
-			Locations: c.Platforms.Facebook.TargetAudiance.Locations,
-		}
-		fct := &model.Creatives{
-			Header: c.Platforms.Facebook.Creatives.Header,
-			Description:c.Platforms.Facebook.Creatives.Description,
-			URL:c.Platforms.Facebook.Creatives.URL,
-			Image:c.Platforms.Facebook.Creatives.Image,
-		}
-		fin := &model.Insights{
-			Impressions: c.Platforms.Facebook.Insights.Impressions,
-			Clicks: c.Platforms.Facebook.Insights.Clicks,
-			CostPerClick: c.Platforms.Facebook.Insights.CostPerClick,
-			ClickThroughRate: c.Platforms.Facebook.Insights.ClickThroughRate,
-			AdvancedKpi1: c.Platforms.Facebook.Insights.AdvancedKpi1,
-			AdvancedKpi2: c.Platforms.Facebook.Insights.AdvancedKpi2,
-			NanosScore: c.Platforms.Facebook.Insights.NanosScore,
-		}
-		fb.TargetAudiance = fta
-		fb.Creatives = fct
-		fb.Insights = fin
-
-		ins := &model.Platform{
-			Status: c.Platforms.Instagram.Status,
-			TotalBudget: c.Platforms.Instagram.TotalBudget,
-			RemainingBudget: c.Platforms.Instagram.RemainingBudget,
-			StartDate: c.Platforms.Instagram.StartDate,
-			EndDate: c.Platforms.Instagram.EndDate,
-
-		}
-		insta := &model.TargetAudiance{
-			Languages: c.Platforms.Instagram.TargetAudiance.Languages,
-			Genders: c.Platforms.Instagram.TargetAudiance.Genders,
-			AgeRange: c.Platforms.Instagram.TargetAudiance.AgeRange,
-			Locations: c.Platforms.Instagram.TargetAudiance.Locations,
-			Interests: c.Platforms.Instagram.TargetAudiance.Interests,
-		}
-		insct := &model.Creatives{
-			Header: c.Platforms.Instagram.Creatives.Header,
-			Description:c.Platforms.Instagram.Creatives.Description,
-			URL:c.Platforms.Instagram.Creatives.URL,
-			Image:c.Platforms.Instagram.Creatives.Image,
-		}
-		insin := &model.Insights{
-			Impressions: c.Platforms.Instagram.Insights.Impressions,
-			Clicks: c.Platforms.Instagram.Insights.Clicks,
-			WebsiteVisits: c.Platforms.Instagram.Insights.WebsiteVisits,
-			CostPerClick: c.Platforms.Instagram.Insights.CostPerClick,
-			ClickThroughRate: c.Platforms.Instagram.Insights.ClickThroughRate,
-			AdvancedKpi1: c.Platforms.Instagram.Insights.AdvancedKpi1,
-			AdvancedKpi2: c.Platforms.Instagram.Insights.AdvancedKpi2,
-			NanosScore: c.Platforms.Instagram.Insights.NanosScore,
-		}
-		ins.TargetAudiance = insta
-		ins.Creatives = insct
-		ins.Insights = insin
-
-		gog := &model.Platform{
-			Status: c.Platforms.Google.Status,
-			TotalBudget: c.Platforms.Google.TotalBudget,
-			RemainingBudget: c.Platforms.Google.RemainingBudget,
-			StartDate: c.Platforms.Google.StartDate,
-			EndDate: c.Platforms.Google.EndDate,
-
-		}
-		gogta := &model.TargetAudiance{
-			Languages: c.Platforms.Google.TargetAudiance.Languages,
-			Genders: c.Platforms.Google.TargetAudiance.Genders,
-			AgeRange: c.Platforms.Google.TargetAudiance.AgeRange,
-			Locations: c.Platforms.Google.TargetAudiance.Locations,
-			KeyWords: c.Platforms.Google.TargetAudiance.KeyWords,
-			Interests: c.Platforms.Google.TargetAudiance.Interests,
-		}
-		gogct := &model.Creatives{
-			Header1:c.Platforms.Google.Creatives.Header1,
-			Header2:c.Platforms.Google.Creatives.Header2,
-			Description:c.Platforms.Google.Creatives.Description,
-			URL:c.Platforms.Google.Creatives.URL,
-			Image:c.Platforms.Google.Creatives.Image,
-		}
-		gogin := &model.Insights{
-			Impressions: c.Platforms.Google.Insights.Impressions,
-			Clicks: c.Platforms.Google.Insights.Clicks,
-			WebsiteVisits: c.Platforms.Google.Insights.WebsiteVisits,
-			CostPerClick: c.Platforms.Google.Insights.CostPerClick,
-			ClickThroughRate: c.Platforms.Google.Insights.ClickThroughRate,
-			AdvancedKpi1: c.Platforms.Google.Insights.AdvancedKpi1,
-		}
-		gog.TargetAudiance = gogta
-		gog.Creatives = gogct
-		gog.Insights = gogin
-
-		ac.Platforms = &model.Platforms{
 			Facebook: fb,
 			Instagram: ins,
 			Google: gog,
