@@ -22,7 +22,7 @@ func main() {
 	dao.Connect()
 
 	// import data
-	err := service.AdCampaignService{}.DataImport()
+	err := (&service.AdCampaignService{}).DataImport()
 	if err != nil {
 		log.Fatal(err)
 	}

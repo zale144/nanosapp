@@ -8,6 +8,7 @@ import (
 	"github.com/zale144/nanosapp/services/adCampaign/storage"
 	"io/ioutil"
 	"encoding/json"
+	"fmt"
 )
 
 // AdCampaignService ...
@@ -47,10 +48,11 @@ func (srv *AdCampaignService) DataImport() error {
 	err = srv.Storage.DeleteAll()
 	if err != nil {
 		log.Println(err)
-		return err
+		// no return here
 	}
 	// convert the proto type into the model type
 	modelAdCampaigns := srv.mapAdCampaignsToModel(adCampaigns...)
+	fmt.Println(len(modelAdCampaigns))
 	// insert the new data into the database
 	for _, v := range modelAdCampaigns {
 		err = srv.Storage.Insert(*v)
