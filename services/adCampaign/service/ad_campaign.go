@@ -89,13 +89,10 @@ func (srv *AdCampaignService) mapAdCampaignsToProto(adCampaigns ...model.AdCampa
 			Genders: c.Platforms.Facebook.TargetAudiance.Genders,
 			AgeRange: c.Platforms.Facebook.TargetAudiance.AgeRange,
 			Locations: c.Platforms.Facebook.TargetAudiance.Locations,
-			KeyWords: c.Platforms.Facebook.TargetAudiance.KeyWords,
 			Interests: c.Platforms.Facebook.TargetAudiance.Interests,
 		}
 		fct := &proto.Creatives{
 			Header: c.Platforms.Facebook.Creatives.Header,
-			Header1:c.Platforms.Facebook.Creatives.Header1,
-			Header2:c.Platforms.Facebook.Creatives.Header2,
 			Description:c.Platforms.Facebook.Creatives.Description,
 			URL:c.Platforms.Facebook.Creatives.URL,
 			Image:c.Platforms.Facebook.Creatives.Image,
@@ -103,7 +100,6 @@ func (srv *AdCampaignService) mapAdCampaignsToProto(adCampaigns ...model.AdCampa
 		fin := &proto.Insights{
 			Impressions: c.Platforms.Facebook.Insights.Impressions,
 			Clicks: c.Platforms.Facebook.Insights.Clicks,
-			WebsiteVisits: c.Platforms.Facebook.Insights.WebsiteVisits,
 			CostPerClick: c.Platforms.Facebook.Insights.CostPerClick,
 			ClickThroughRate: c.Platforms.Facebook.Insights.ClickThroughRate,
 			AdvancedKpi1: c.Platforms.Facebook.Insights.AdvancedKpi1,
@@ -127,13 +123,10 @@ func (srv *AdCampaignService) mapAdCampaignsToProto(adCampaigns ...model.AdCampa
 			Genders: c.Platforms.Instagram.TargetAudiance.Genders,
 			AgeRange: c.Platforms.Instagram.TargetAudiance.AgeRange,
 			Locations: c.Platforms.Instagram.TargetAudiance.Locations,
-			KeyWords: c.Platforms.Instagram.TargetAudiance.KeyWords,
 			Interests: c.Platforms.Instagram.TargetAudiance.Interests,
 		}
 		insct := &proto.Creatives{
 			Header: c.Platforms.Instagram.Creatives.Header,
-			Header1:c.Platforms.Instagram.Creatives.Header1,
-			Header2:c.Platforms.Instagram.Creatives.Header2,
 			Description:c.Platforms.Instagram.Creatives.Description,
 			URL:c.Platforms.Instagram.Creatives.URL,
 			Image:c.Platforms.Instagram.Creatives.Image,
@@ -166,10 +159,8 @@ func (srv *AdCampaignService) mapAdCampaignsToProto(adCampaigns ...model.AdCampa
 			AgeRange: c.Platforms.Google.TargetAudiance.AgeRange,
 			Locations: c.Platforms.Google.TargetAudiance.Locations,
 			KeyWords: c.Platforms.Google.TargetAudiance.KeyWords,
-			Interests: c.Platforms.Google.TargetAudiance.Interests,
 		}
 		gogct := &proto.Creatives{
-			Header: c.Platforms.Google.Creatives.Header,
 			Header1:c.Platforms.Google.Creatives.Header1,
 			Header2:c.Platforms.Google.Creatives.Header2,
 			Description:c.Platforms.Google.Creatives.Description,
@@ -183,8 +174,6 @@ func (srv *AdCampaignService) mapAdCampaignsToProto(adCampaigns ...model.AdCampa
 			CostPerClick: c.Platforms.Google.Insights.CostPerClick,
 			ClickThroughRate: c.Platforms.Google.Insights.ClickThroughRate,
 			AdvancedKpi1: c.Platforms.Google.Insights.AdvancedKpi1,
-			AdvancedKpi2: c.Platforms.Google.Insights.AdvancedKpi2,
-			NanosScore: c.Platforms.Google.Insights.NanosScore,
 		}
 		gog.TargetAudiance = gogta
 		gog.Creatives = gogct
@@ -226,13 +215,9 @@ func (srv *AdCampaignService) mapAdCampaignsToModel(adCampaigns ...proto.AdCampa
 			Genders: c.Platforms.Facebook.TargetAudiance.Genders,
 			AgeRange: c.Platforms.Facebook.TargetAudiance.AgeRange,
 			Locations: c.Platforms.Facebook.TargetAudiance.Locations,
-			KeyWords: c.Platforms.Facebook.TargetAudiance.KeyWords,
-			Interests: c.Platforms.Facebook.TargetAudiance.Interests,
 		}
 		fct := &model.Creatives{
 			Header: c.Platforms.Facebook.Creatives.Header,
-			Header1:c.Platforms.Facebook.Creatives.Header1,
-			Header2:c.Platforms.Facebook.Creatives.Header2,
 			Description:c.Platforms.Facebook.Creatives.Description,
 			URL:c.Platforms.Facebook.Creatives.URL,
 			Image:c.Platforms.Facebook.Creatives.Image,
@@ -240,7 +225,6 @@ func (srv *AdCampaignService) mapAdCampaignsToModel(adCampaigns ...proto.AdCampa
 		fin := &model.Insights{
 			Impressions: c.Platforms.Facebook.Insights.Impressions,
 			Clicks: c.Platforms.Facebook.Insights.Clicks,
-			WebsiteVisits: c.Platforms.Facebook.Insights.WebsiteVisits,
 			CostPerClick: c.Platforms.Facebook.Insights.CostPerClick,
 			ClickThroughRate: c.Platforms.Facebook.Insights.ClickThroughRate,
 			AdvancedKpi1: c.Platforms.Facebook.Insights.AdvancedKpi1,
@@ -264,13 +248,10 @@ func (srv *AdCampaignService) mapAdCampaignsToModel(adCampaigns ...proto.AdCampa
 			Genders: c.Platforms.Instagram.TargetAudiance.Genders,
 			AgeRange: c.Platforms.Instagram.TargetAudiance.AgeRange,
 			Locations: c.Platforms.Instagram.TargetAudiance.Locations,
-			KeyWords: c.Platforms.Instagram.TargetAudiance.KeyWords,
 			Interests: c.Platforms.Instagram.TargetAudiance.Interests,
 		}
 		insct := &model.Creatives{
 			Header: c.Platforms.Instagram.Creatives.Header,
-			Header1:c.Platforms.Instagram.Creatives.Header1,
-			Header2:c.Platforms.Instagram.Creatives.Header2,
 			Description:c.Platforms.Instagram.Creatives.Description,
 			URL:c.Platforms.Instagram.Creatives.URL,
 			Image:c.Platforms.Instagram.Creatives.Image,
@@ -306,7 +287,6 @@ func (srv *AdCampaignService) mapAdCampaignsToModel(adCampaigns ...proto.AdCampa
 			Interests: c.Platforms.Google.TargetAudiance.Interests,
 		}
 		gogct := &model.Creatives{
-			Header: c.Platforms.Google.Creatives.Header,
 			Header1:c.Platforms.Google.Creatives.Header1,
 			Header2:c.Platforms.Google.Creatives.Header2,
 			Description:c.Platforms.Google.Creatives.Description,
@@ -320,8 +300,6 @@ func (srv *AdCampaignService) mapAdCampaignsToModel(adCampaigns ...proto.AdCampa
 			CostPerClick: c.Platforms.Google.Insights.CostPerClick,
 			ClickThroughRate: c.Platforms.Google.Insights.ClickThroughRate,
 			AdvancedKpi1: c.Platforms.Google.Insights.AdvancedKpi1,
-			AdvancedKpi2: c.Platforms.Google.Insights.AdvancedKpi2,
-			NanosScore: c.Platforms.Google.Insights.NanosScore,
 		}
 		gog.TargetAudiance = gogta
 		gog.Creatives = gogct
