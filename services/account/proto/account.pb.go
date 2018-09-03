@@ -18,91 +18,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-type AccountGetRequest struct {
-	Username             string   `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *AccountGetRequest) Reset()         { *m = AccountGetRequest{} }
-func (m *AccountGetRequest) String() string { return proto.CompactTextString(m) }
-func (*AccountGetRequest) ProtoMessage()    {}
-func (*AccountGetRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_account_5ac7cc628d92f613, []int{0}
-}
-func (m *AccountGetRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_AccountGetRequest.Unmarshal(m, b)
-}
-func (m *AccountGetRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_AccountGetRequest.Marshal(b, m, deterministic)
-}
-func (dst *AccountGetRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_AccountGetRequest.Merge(dst, src)
-}
-func (m *AccountGetRequest) XXX_Size() int {
-	return xxx_messageInfo_AccountGetRequest.Size(m)
-}
-func (m *AccountGetRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_AccountGetRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_AccountGetRequest proto.InternalMessageInfo
-
-func (m *AccountGetRequest) GetUsername() string {
-	if m != nil {
-		return m.Username
-	}
-	return ""
-}
-
-type AccountResponse struct {
-	Account              string   `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
-	Password             string   `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *AccountResponse) Reset()         { *m = AccountResponse{} }
-func (m *AccountResponse) String() string { return proto.CompactTextString(m) }
-func (*AccountResponse) ProtoMessage()    {}
-func (*AccountResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_account_5ac7cc628d92f613, []int{1}
-}
-func (m *AccountResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_AccountResponse.Unmarshal(m, b)
-}
-func (m *AccountResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_AccountResponse.Marshal(b, m, deterministic)
-}
-func (dst *AccountResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_AccountResponse.Merge(dst, src)
-}
-func (m *AccountResponse) XXX_Size() int {
-	return xxx_messageInfo_AccountResponse.Size(m)
-}
-func (m *AccountResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_AccountResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_AccountResponse proto.InternalMessageInfo
-
-func (m *AccountResponse) GetAccount() string {
-	if m != nil {
-		return m.Account
-	}
-	return ""
-}
-
-func (m *AccountResponse) GetPassword() string {
-	if m != nil {
-		return m.Password
-	}
-	return ""
-}
-
-type AccountAddRequest struct {
+type Account struct {
 	Username             string   `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
 	Password             string   `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -110,38 +26,38 @@ type AccountAddRequest struct {
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *AccountAddRequest) Reset()         { *m = AccountAddRequest{} }
-func (m *AccountAddRequest) String() string { return proto.CompactTextString(m) }
-func (*AccountAddRequest) ProtoMessage()    {}
-func (*AccountAddRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_account_5ac7cc628d92f613, []int{2}
+func (m *Account) Reset()         { *m = Account{} }
+func (m *Account) String() string { return proto.CompactTextString(m) }
+func (*Account) ProtoMessage()    {}
+func (*Account) Descriptor() ([]byte, []int) {
+	return fileDescriptor_account_13191656052740b8, []int{0}
 }
-func (m *AccountAddRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_AccountAddRequest.Unmarshal(m, b)
+func (m *Account) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Account.Unmarshal(m, b)
 }
-func (m *AccountAddRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_AccountAddRequest.Marshal(b, m, deterministic)
+func (m *Account) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Account.Marshal(b, m, deterministic)
 }
-func (dst *AccountAddRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_AccountAddRequest.Merge(dst, src)
+func (dst *Account) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Account.Merge(dst, src)
 }
-func (m *AccountAddRequest) XXX_Size() int {
-	return xxx_messageInfo_AccountAddRequest.Size(m)
+func (m *Account) XXX_Size() int {
+	return xxx_messageInfo_Account.Size(m)
 }
-func (m *AccountAddRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_AccountAddRequest.DiscardUnknown(m)
+func (m *Account) XXX_DiscardUnknown() {
+	xxx_messageInfo_Account.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_AccountAddRequest proto.InternalMessageInfo
+var xxx_messageInfo_Account proto.InternalMessageInfo
 
-func (m *AccountAddRequest) GetUsername() string {
+func (m *Account) GetUsername() string {
 	if m != nil {
 		return m.Username
 	}
 	return ""
 }
 
-func (m *AccountAddRequest) GetPassword() string {
+func (m *Account) GetPassword() string {
 	if m != nil {
 		return m.Password
 	}
@@ -149,27 +65,22 @@ func (m *AccountAddRequest) GetPassword() string {
 }
 
 func init() {
-	proto.RegisterType((*AccountGetRequest)(nil), "account.AccountGetRequest")
-	proto.RegisterType((*AccountResponse)(nil), "account.AccountResponse")
-	proto.RegisterType((*AccountAddRequest)(nil), "account.AccountAddRequest")
+	proto.RegisterType((*Account)(nil), "account.Account")
 }
 
 func init() {
-	proto.RegisterFile("account/proto/account.proto", fileDescriptor_account_5ac7cc628d92f613)
+	proto.RegisterFile("account/proto/account.proto", fileDescriptor_account_13191656052740b8)
 }
 
-var fileDescriptor_account_5ac7cc628d92f613 = []byte{
-	// 184 bytes of a gzipped FileDescriptorProto
+var fileDescriptor_account_13191656052740b8 = []byte{
+	// 136 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x92, 0x4e, 0x4c, 0x4e, 0xce,
 	0x2f, 0xcd, 0x2b, 0xd1, 0x2f, 0x28, 0xca, 0x2f, 0xc9, 0xd7, 0x87, 0xf2, 0xf4, 0xc0, 0x3c, 0x21,
-	0x76, 0x28, 0x57, 0x49, 0x9f, 0x4b, 0xd0, 0x11, 0xc2, 0x74, 0x4f, 0x2d, 0x09, 0x4a, 0x2d, 0x2c,
-	0x4d, 0x2d, 0x2e, 0x11, 0x92, 0xe2, 0xe2, 0x28, 0x2d, 0x4e, 0x2d, 0xca, 0x4b, 0xcc, 0x4d, 0x95,
-	0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x82, 0xf3, 0x95, 0xdc, 0xb9, 0xf8, 0xa1, 0x1a, 0x82, 0x52,
-	0x8b, 0x0b, 0xf2, 0xf3, 0x8a, 0x53, 0x85, 0x24, 0xb8, 0x60, 0xc6, 0x41, 0x55, 0xc3, 0xb8, 0x20,
-	0x83, 0x0a, 0x12, 0x8b, 0x8b, 0xcb, 0xf3, 0x8b, 0x52, 0x24, 0x98, 0x20, 0x06, 0xc1, 0xf8, 0x4a,
-	0xde, 0x70, 0x9b, 0x1d, 0x53, 0x52, 0x88, 0xb0, 0x19, 0x9f, 0x61, 0x46, 0xed, 0x8c, 0x5c, 0xec,
-	0x50, 0xd3, 0x84, 0x6c, 0xb9, 0x98, 0xdd, 0x53, 0x4b, 0x84, 0xa4, 0xf4, 0x60, 0x5e, 0xc6, 0xf0,
-	0xa0, 0x94, 0x04, 0xba, 0x1c, 0xcc, 0x2f, 0x4a, 0x0c, 0x20, 0xed, 0x8e, 0x29, 0x29, 0x98, 0xda,
-	0x11, 0xae, 0xc4, 0xa7, 0x3d, 0x89, 0x0d, 0x1c, 0xc0, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff,
-	0x15, 0xd1, 0x55, 0x79, 0x7f, 0x01, 0x00, 0x00,
+	0x76, 0x28, 0x57, 0xc9, 0x91, 0x8b, 0xdd, 0x11, 0xc2, 0x14, 0x92, 0xe2, 0xe2, 0x28, 0x2d, 0x4e,
+	0x2d, 0xca, 0x4b, 0xcc, 0x4d, 0x95, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x82, 0xf3, 0x41, 0x72,
+	0x05, 0x89, 0xc5, 0xc5, 0xe5, 0xf9, 0x45, 0x29, 0x12, 0x4c, 0x10, 0x39, 0x18, 0xdf, 0x28, 0x8b,
+	0x8b, 0x0f, 0x6a, 0x44, 0x70, 0x6a, 0x51, 0x59, 0x66, 0x72, 0xaa, 0x90, 0x36, 0x17, 0xb3, 0x7b,
+	0x6a, 0x89, 0x90, 0x80, 0x1e, 0xcc, 0x52, 0xa8, 0xbc, 0x14, 0x86, 0x88, 0x12, 0x03, 0x48, 0xb1,
+	0x63, 0x4a, 0x0a, 0x71, 0x8a, 0x93, 0xd8, 0xc0, 0xce, 0x37, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff,
+	0x63, 0x5c, 0xa2, 0x59, 0xdd, 0x00, 0x00, 0x00,
 }

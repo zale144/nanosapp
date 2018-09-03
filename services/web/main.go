@@ -1,17 +1,19 @@
-package web
+package main
 
 import (
-	"net/http"
-	"github.com/dchest/authcookie"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
 	"os"
+	"io"
 	"fmt"
 	"log"
+	"net/http"
 	"html/template"
-	"io"
+
+	"github.com/labstack/echo"
+	"github.com/dchest/authcookie"
+	"github.com/labstack/echo/middleware"
 	"github.com/zale144/nanosapp/services/web/commons"
 	"github.com/zale144/nanosapp/services/web/service"
+	"github.com/zale144/nanosapp/services/web/client"
 )
 
 func main() {
@@ -37,10 +39,9 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		return c.Redirect(http.StatusTemporaryRedirect, "/admin/home")
 	})
-	e.POST("/login", service.AccountService.Login)
+	e.POST("/login", service.AccountService{}.Login)
 	e.GET("/logout", service.AccountService{}.Logout)
-	e.GET("/calling-card/:user", service.UserService{}.CallingCard)      // for sharing
-	e.GET("/user-info/:account/:user", service.UserService{}.GetProfile) // for htmlToimage
+	e.GET("/register", service.AccountService{}.Register)
 
 	// ***************** private ***************************
 	a := e.Group("/admin")
@@ -66,7 +67,6 @@ func (t *wTemplate) Render(w io.Writer, name string, data interface{}, c echo.Co
 	return t.templates.ExecuteTemplate(w, name, data)
 }
 
-
 // authMiddleware is used to check if user is logged in
 func authMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
@@ -76,7 +76,7 @@ func authMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 			if login == "" {
 				return c.Redirect(http.StatusTemporaryRedirect, "/login")
 			}
-			acc, err := client.Session{}.Get(login, "")
+			acc, err := client.AccountClient{}.Get(login)
 			if err != nil {
 				service.AccountService{}.Logout(c)
 				return c.Redirect(http.StatusTemporaryRedirect, "/login")

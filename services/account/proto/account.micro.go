@@ -8,9 +8,7 @@ It is generated from these files:
 	account/proto/account.proto
 
 It has these top-level messages:
-	AccountGetRequest
-	AccountResponse
-	AccountAddRequest
+	Account
 */
 package account
 
@@ -40,11 +38,11 @@ var _ context.Context
 var _ client.Option
 var _ server.Option
 
-// Client API for Account service
+// Client API for AccountService service
 
 type AccountService interface {
-	Get(ctx context.Context, in *AccountGetRequest, opts ...client.CallOption) (*AccountResponse, error)
-	Add(ctx context.Context, in *AccountAddRequest, opts ...client.CallOption) (*AccountResponse, error)
+	Get(ctx context.Context, in *Account, opts ...client.CallOption) (*Account, error)
+	Add(ctx context.Context, in *Account, opts ...client.CallOption) (*Account, error)
 }
 
 type accountService struct {
@@ -65,9 +63,9 @@ func NewAccountService(name string, c client.Client) AccountService {
 	}
 }
 
-func (c *accountService) Get(ctx context.Context, in *AccountGetRequest, opts ...client.CallOption) (*AccountResponse, error) {
-	req := c.c.NewRequest(c.name, "Account.Get", in)
-	out := new(AccountResponse)
+func (c *accountService) Get(ctx context.Context, in *Account, opts ...client.CallOption) (*Account, error) {
+	req := c.c.NewRequest(c.name, "AccountService.Get", in)
+	out := new(Account)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -75,9 +73,9 @@ func (c *accountService) Get(ctx context.Context, in *AccountGetRequest, opts ..
 	return out, nil
 }
 
-func (c *accountService) Add(ctx context.Context, in *AccountAddRequest, opts ...client.CallOption) (*AccountResponse, error) {
-	req := c.c.NewRequest(c.name, "Account.Add", in)
-	out := new(AccountResponse)
+func (c *accountService) Add(ctx context.Context, in *Account, opts ...client.CallOption) (*Account, error) {
+	req := c.c.NewRequest(c.name, "AccountService.Add", in)
+	out := new(Account)
 	err := c.c.Call(ctx, req, out, opts...)
 	if err != nil {
 		return nil, err
@@ -85,33 +83,33 @@ func (c *accountService) Add(ctx context.Context, in *AccountAddRequest, opts ..
 	return out, nil
 }
 
-// Server API for Account service
+// Server API for AccountService service
 
-type AccountHandler interface {
-	Get(context.Context, *AccountGetRequest, *AccountResponse) error
-	Add(context.Context, *AccountAddRequest, *AccountResponse) error
+type AccountServiceHandler interface {
+	Get(context.Context, *Account, *Account) error
+	Add(context.Context, *Account, *Account) error
 }
 
-func RegisterAccountHandler(s server.Server, hdlr AccountHandler, opts ...server.HandlerOption) {
-	type account interface {
-		Get(ctx context.Context, in *AccountGetRequest, out *AccountResponse) error
-		Add(ctx context.Context, in *AccountAddRequest, out *AccountResponse) error
+func RegisterAccountServiceHandler(s server.Server, hdlr AccountServiceHandler, opts ...server.HandlerOption) {
+	type accountService interface {
+		Get(ctx context.Context, in *Account, out *Account) error
+		Add(ctx context.Context, in *Account, out *Account) error
 	}
-	type Account struct {
-		account
+	type AccountService struct {
+		accountService
 	}
-	h := &accountHandler{hdlr}
-	s.Handle(s.NewHandler(&Account{h}, opts...))
+	h := &accountServiceHandler{hdlr}
+	s.Handle(s.NewHandler(&AccountService{h}, opts...))
 }
 
-type accountHandler struct {
-	AccountHandler
+type accountServiceHandler struct {
+	AccountServiceHandler
 }
 
-func (h *accountHandler) Get(ctx context.Context, in *AccountGetRequest, out *AccountResponse) error {
-	return h.AccountHandler.Get(ctx, in, out)
+func (h *accountServiceHandler) Get(ctx context.Context, in *Account, out *Account) error {
+	return h.AccountServiceHandler.Get(ctx, in, out)
 }
 
-func (h *accountHandler) Add(ctx context.Context, in *AccountAddRequest, out *AccountResponse) error {
-	return h.AccountHandler.Add(ctx, in, out)
+func (h *accountServiceHandler) Add(ctx context.Context, in *Account, out *Account) error {
+	return h.AccountServiceHandler.Add(ctx, in, out)
 }
