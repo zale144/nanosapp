@@ -3,7 +3,6 @@ package storage
 import (
 	"github.com/zale144/nanosapp/services/account/model"
 	"github.com/zale144/nanosapp/services/account/db"
-	commons "github.com/zale144/nanosapp/services/account/commons"
 )
 
 type AccountStorage struct {}
@@ -24,7 +23,6 @@ func (as AccountStorage) GetByUsername(username string) (*model.Account, error) 
 
 // Insert adds an account row to the database
 func (as AccountStorage) Insert(account model.Account) error {
-	account.Password = commons.CryptPrivate(account.Password, commons.CRYPT_SETTING)
 
 	tx := db.PgsqlDB.Begin()
 

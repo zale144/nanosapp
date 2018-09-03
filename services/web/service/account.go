@@ -10,6 +10,8 @@ import (
 	"github.com/labstack/echo"
 	"strings"
 	"github.com/zale144/nanosapp/services/web/client"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/zale144/instagram-bot/services/api/model"
 )
 
 type AccountService interface {
@@ -33,13 +35,26 @@ func Login(c echo.Context) error {
 	if username == "" || password == "" {
 		return echo.ErrUnauthorized
 	}
-	_, err := client.AccountClient{}.Get(username, password)
+	account, err := client.AccountClient{}.Get(username)
 	if err != nil {
 		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
 		return err
 	}
+	if account == nil {
+		err := fmt.Errorf("the account with provided username does not exist")
+		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
+		return err
+	}
 
-	token, err := client.Api{}.Login(username)
+	passwordHash := commons.CryptPrivate(password, commons.CRYPT_SETTING)
+
+	if passwordHash != account.Password {
+		err := fmt.Errorf("wrong password for your account")
+		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
+		return err
+	}
+
+	token, err := LoginApi(username)
 	if err != nil {
 		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
 		return err
@@ -57,6 +72,25 @@ func Login(c echo.Context) error {
 	})
 }
 
+func LoginApi(username string) (string, error) {
+	claims := &model.JwtCustomClaims{
+		Name: username,
+		Admin: true,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
+		},
+	}
+	// Create token with claims
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	// Generate encoded token and send it as response.
+	t, err := token.SignedString([]byte(model.SECRET))
+	if err != nil {
+		log.Println(err)
+		return "", err
+	}
+	return t, nil
+}
+
 // Logout handles logout requests. It expires the cookie and
 // logs the user out of Instagram by calling the 'session' service.
 func Logout(c echo.Context) error {
@@ -68,32 +102,5 @@ func Logout(c echo.Context) error {
 	}
 	c.SetCookie(cookie)
 
-	user, err := GetUsernameFromCookie(&c)
-	if err == nil {
-		_, err := client.AccountClient{}.Logout(user)
-		if err != nil {
-			log.Println(err)
-		}
-	} else {
-		log.Println(err)
-	}
 	return c.Redirect(http.StatusSeeOther, "/login")
-}
-
-// GetUsernameFromCookie gets the username from the cookie
-func GetUsernameFromCookie(cp *echo.Context) (string, error) {
-	c := *cp
-	headers := c.Request().Header
-	cookieStr := headers.Get("cookie")
-	if cookieStr == "" {
-		err := fmt.Errorf("empty cookie")
-		return "", err
-	}
-	value := strings.Replace(cookieStr, commons.CookieName+"=", "", -1)
-	username := authcookie.Login(value, []byte(commons.SECRET))
-	if username == "" {
-		err := fmt.Errorf("no user authenticated")
-		return "", err
-	}
-	return username, nil
 }

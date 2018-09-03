@@ -5,10 +5,6 @@ import (
 	"strings"
 )
 
-const (
-	CRYPT_SETTING = "$P$BwQZDcQaNU9zAOF.6MOUdEhz9X68fL1"
-)
-
 // CryptPrivate hashes the password string
 func CryptPrivate(pw, setting string) string {
 	const itoa64 = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
