@@ -62,3 +62,9 @@ func encode64(inp []byte, count int) string {
 	}
 	return outp
 }
+
+// PortableHashCheck checks if passwords match
+func PortableHashCheck(pw, storedHash string) bool {
+	hx := CryptPrivate(pw, storedHash)
+	return hx == storedHash
+}

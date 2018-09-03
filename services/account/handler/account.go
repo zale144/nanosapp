@@ -23,7 +23,6 @@ func (m *Account) Get(ctx context.Context, req *proto.Account, rsp *proto.Accoun
 		Username: account.Username,
 		Password: account.Password,
 	}
-	log.Println(rsp)
 	return nil
 }
 
@@ -40,6 +39,5 @@ func (m *Account) Add(ctx context.Context, req *proto.Account, rsp *proto.Accoun
 	rsp = &proto.Account{
 		Username: req.Username,
 	}
-
 	return nil
 }
