@@ -1,7 +1,6 @@
 package main
 
 import (
-	"os"
 	"io"
 	"fmt"
 	"log"
@@ -41,13 +40,11 @@ func main() {
 	})
 	e.POST("/login", service.AccountService{}.Login)
 	e.GET("/logout", service.AccountService{}.Logout)
-	e.GET("/register", service.AccountService{}.Register)
+	e.POST("/register", service.AccountService{}.Register)
 
 	// ***************** private ***************************
 	a := e.Group("/admin")
 	a.Use(authMiddleware)
-
-	commons.ApiURL = os.Getenv("API_HOST")
 
 	a.GET("/home", func(c echo.Context) error {
 		data := map[string]interface{}{

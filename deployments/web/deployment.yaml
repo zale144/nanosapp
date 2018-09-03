@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  namespace: default
+  name: webdepl
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: web
+        command: [
+      		"./nanosapp.web",
+      		"--server_address=0.0.0.0:8080",
+      		"--broker_address=0.0.0.0:10001",
+      		"--selector=static",
+      	]
+        image: nanosapp/web:v0.0.1
+        env:
+          - name: API_HOST
+            value: "http://192.168.99.100:30001"
+        ports:
+        - containerPort: 8080
+          name: srvc-port
+        - containerPort: 8081
+          name: web-port

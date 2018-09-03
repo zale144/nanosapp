@@ -292,11 +292,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:1681a0493c4ba6213205fc4b4ae2b4ed43abfe2b2e0116932aea3daa637a99b1"
+  digest = "1:470a988810179efd6e0d64102f32dc8e5322651aca0da37d73262c4fd63048bc"
   name = "github.com/zale144/nanosapp"
   packages = ["services/account/proto"]
   pruneopts = "UT"
-  revision = "305dd534a15019c1d2904221b85a5f99d046b484"
+  revision = "97a3a26e670ec2fa584998759733e827fb0b5bd6"
 
 [[projects]]
   branch = "master"

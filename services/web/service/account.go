@@ -2,16 +2,15 @@ package service
 
 import (
 	"fmt"
-	"net/http"
-	"time"
 	"log"
+	"time"
+	"net/http"
 
-	"github.com/zale144/nanosapp/services/web/commons"
-	"github.com/dchest/authcookie"
 	"github.com/labstack/echo"
-	"github.com/zale144/nanosapp/services/web/client"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/zale144/instagram-bot/services/api/model"
+	"github.com/dchest/authcookie"
+	"github.com/zale144/nanosapp/services/web/client"
+	"github.com/zale144/nanosapp/services/web/commons"
 )
 
 type AccountService struct {}
@@ -67,8 +66,10 @@ func (as AccountService) Login(c echo.Context) error {
 	})
 }
 
+// loginApi creates a signed JWT token for
+// accessing the api endpoints
 func loginApi(username string) (string, error) {
-	claims := &model.JwtCustomClaims{
+	claims := &commons.JwtCustomClaims{
 		Name: username,
 		Admin: true,
 		StandardClaims: jwt.StandardClaims{
@@ -78,7 +79,7 @@ func loginApi(username string) (string, error) {
 	// Create token with claims
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	// Generate encoded token and send it as response.
-	t, err := token.SignedString([]byte(model.SECRET))
+	t, err := token.SignedString([]byte(commons.SECRET))
 	if err != nil {
 		log.Println(err)
 		return "", err
@@ -86,7 +87,7 @@ func loginApi(username string) (string, error) {
 	return t, nil
 }
 
-// Register registers a new account
+// Register handles requests to register a new account
 func (as AccountService) Register(c echo.Context) error {
 
 	username, password := c.Param("username"), c.Param("password")
@@ -101,8 +102,9 @@ func (as AccountService) Register(c echo.Context) error {
 		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
 		return err
 	}
+	// encrypt the password
 	password = commons.CryptPrivate(password, commons.CRYPT_SETTING)
-
+	// use the account microservice client to add a new account to it's db
 	accountResponse, err := client.AccountClient{}.Add(username, password)
 	if err != nil {
 		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
@@ -114,19 +116,29 @@ func (as AccountService) Register(c echo.Context) error {
 		return err
 	}
 
+	// login to api
+	token, err := loginApi(username)
+	if err != nil {
+		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
+		return err
+	}
+
+	// login to web
 	cookie := &http.Cookie{
-		Name:  model.CookieName,
-		Value: authcookie.NewSinceNow(accountResponse.Account, 24*time.Hour, []byte(model.SECRET)),
+		Name:  commons.CookieName,
+		Value: authcookie.NewSinceNow(accountResponse.Username, 24 * time.Hour, []byte(commons.SECRET)),
 		Path:  "/",
 	}
 
 	c.SetCookie(cookie)
 
-	return c.JSON(http.StatusCreated, "Created")
+	return c.JSON(http.StatusOK, echo.Map{
+		"token": token,
+	})
 }
 
-// Logout handles logout requests. It expires the cookie and
-// logs the user out of Instagram by calling the 'session' service.
+// Logout handles logout requests. It expires the cookie
+// and redirects the user to the login page
 func (as AccountService) Logout(c echo.Context) error {
 	// expire the cookie
 	cookie := &http.Cookie{

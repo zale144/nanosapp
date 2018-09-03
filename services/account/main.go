@@ -31,7 +31,7 @@ func main() {
 	)
 	serv.Init()
 
-	proto.RegisterAccountHandler(serv.Server(), &handler.Account{})
+	proto.RegisterAccountServiceHandler(serv.Server(), &handler.Account{})
 
 	if err := serv.Run(); err != nil {
 		log.Fatal(err)
