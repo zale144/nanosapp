@@ -1,6 +1,9 @@
 package commons
 
-import "github.com/dgrijalva/jwt-go"
+import (
+	"github.com/dgrijalva/jwt-go"
+	"github.com/micro/go-micro"
+)
 
 const (
 	CookieName          = "Nanocorp.Challenge"
@@ -11,6 +14,7 @@ const (
 
 var (
 	ApiURL string
+	Service micro.Service
 )
 
 // jwtCustomClaims are custom claims extending default ones.

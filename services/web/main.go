@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"io"
 	"fmt"
 	"log"
@@ -13,6 +14,8 @@ import (
 	"github.com/zale144/nanosapp/services/web/commons"
 	"github.com/zale144/nanosapp/services/web/service"
 	"github.com/zale144/nanosapp/services/web/client"
+	"github.com/micro/go-micro"
+	k8s "github.com/micro/kubernetes/go/micro"
 )
 
 func main() {
@@ -46,6 +49,8 @@ func main() {
 	a := e.Group("/admin")
 	a.Use(authMiddleware)
 
+	commons.ApiURL = os.Getenv("API_HOST")
+
 	a.GET("/home", func(c echo.Context) error {
 		data := map[string]interface{}{
 			"ApiURL":   commons.ApiURL,
@@ -53,7 +58,21 @@ func main() {
 		return c.Render(http.StatusOK, "home", data)
 	})
 
+	go reqService()
 	e.Logger.Fatal(e.Start(":8081"))
+}
+
+// reqService registers the 'web' microservice
+func reqService()  {
+	commons.Service = k8s.NewService(
+		micro.Name("web"),
+		micro.Version("latest"),
+	)
+	commons.Service.Init()
+
+	if err := commons.Service.Run(); err != nil {
+		log.Fatal(err)
+	}
 }
 
 type wTemplate struct {

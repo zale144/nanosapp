@@ -3,16 +3,14 @@ package client
 import (
 	"context"
 	acc "github.com/zale144/nanosapp/services/account/proto"
-	"github.com/micro/go-micro"
+	"github.com/zale144/nanosapp/services/web/commons"
 )
-
-var Service micro.Service
 
 type AccountClient struct {}
 
 // Get calls the account microservice and fetches a new account
 func (ac AccountClient) Get(username string) (*acc.Account, error) {
-	aClient := acc.NewAccountService("session", Service.Client())
+	aClient := acc.NewAccountService("account", commons.Service.Client())
 	return aClient.Get(context.TODO(), &acc.Account{
 		Username:  username,
 	})
@@ -20,7 +18,7 @@ func (ac AccountClient) Get(username string) (*acc.Account, error) {
 
 // Add calls the account microservice and creates a new account
 func (ac AccountClient) Add(username, password string) (*acc.Account, error) {
-	aClient := acc.NewAccountService("session", Service.Client())
+	aClient := acc.NewAccountService("account", commons.Service.Client())
 	return aClient.Add(context.TODO(), &acc.Account{
 		Username:  username,
 		Password: password,

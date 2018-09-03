@@ -90,7 +90,12 @@ func loginApi(username string) (string, error) {
 // Register handles requests to register a new account
 func (as AccountService) Register(c echo.Context) error {
 
-	username, password := c.Param("username"), c.Param("password")
+	username,
+	password,
+	confirmPassword :=
+		c.Param("username"),
+		c.Param("password"),
+		c.Param("confirmPassword")
 
 	if username == "" {
 		err := fmt.Errorf("Username is required")
@@ -99,6 +104,11 @@ func (as AccountService) Register(c echo.Context) error {
 	}
 	if password == "" {
 		err := fmt.Errorf("Password is required")
+		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
+		return err
+	}
+	if password != confirmPassword {
+		err := fmt.Errorf("Passwords don't match")
 		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
 		return err
 	}

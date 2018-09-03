@@ -72,25 +72,6 @@
   version = "v0.8.1"
 
 [[projects]]
-  digest = "1:528c29983014997c16c76382d87e2518581787ee2d461edb61a80320714c160d"
-  name = "github.com/jinzhu/gorm"
-  packages = [
-    ".",
-    "dialects/postgres",
-  ]
-  pruneopts = "UT"
-  revision = "6ed508ec6a4ecb3531899a69cbc746ccf65a4166"
-  version = "v1.9.1"
-
-[[projects]]
-  branch = "master"
-  digest = "1:fd97437fbb6b7dce04132cf06775bd258cce305c44add58eb55ca86c6c325160"
-  name = "github.com/jinzhu/inflection"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "04140366298a54a039076d798123ffa108fff46c"
-
-[[projects]]
   digest = "1:ed322f61bf6c6a69a378a856f60773e2d12285e8725fa47d1effa51076e5aef3"
   name = "github.com/labstack/echo"
   packages = [
@@ -113,18 +94,6 @@
   pruneopts = "UT"
   revision = "d6898124de917583f5ff5592ef931d1dfe0ddc05"
   version = "0.2.6"
-
-[[projects]]
-  digest = "1:5b4bfb4756351d0a9078a771a85e892c34ce33840b56eb7a317cb508adddab7c"
-  name = "github.com/lib/pq"
-  packages = [
-    ".",
-    "hstore",
-    "oid",
-  ]
-  pruneopts = "UT"
-  revision = "4ded0e9383f75c197b3a2aaa6d590ac52df6fd79"
-  version = "v1.0.0"
 
 [[projects]]
   digest = "1:c658e84ad3916da105a761660dcaeb01e63416c8ec7bc62256a9b411a05fcd67"
@@ -284,19 +253,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:043531e48da9b8e2f4beb05b72cc1cb3eb34a18cfb08326ee71bbffcd4a232c2"
-  name = "github.com/zale144/instagram-bot"
-  packages = ["services/api/model"]
-  pruneopts = "UT"
-  revision = "2cbcd55519fb36583c4a0ff5f778f6b86f287628"
-
-[[projects]]
-  branch = "master"
   digest = "1:470a988810179efd6e0d64102f32dc8e5322651aca0da37d73262c4fd63048bc"
   name = "github.com/zale144/nanosapp"
   packages = ["services/account/proto"]
   pruneopts = "UT"
-  revision = "97a3a26e670ec2fa584998759733e827fb0b5bd6"
+  revision = "8e70adb3f54d4f79a19a245ddb438a749d663a83"
 
 [[projects]]
   branch = "master"
@@ -343,7 +304,6 @@
     "github.com/labstack/echo",
     "github.com/labstack/echo/middleware",
     "github.com/micro/go-micro",
-    "github.com/zale144/instagram-bot/services/api/model",
     "github.com/zale144/nanosapp/services/account/proto",
   ]
   solver-name = "gps-cdcl"
