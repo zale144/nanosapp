@@ -30,15 +30,15 @@ func (as AccountService) Login(c echo.Context) error {
 	if username == "" || password == "" {
 		return echo.ErrUnauthorized
 	}
-	account, err := client.AccountClient{}.Get(username)
-	if err != nil || account == nil {
+	accP, err := client.AccountClient{}.Get(username)
+	if err != nil || accP == nil {
 		err := fmt.Errorf("the account with provided username does not exist")
 		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
 		return err
 	}
-
-	fmt.Println(commons.CryptPrivate(password, commons.CRYPT_SETTING))
-	fmt.Println(account.Password)
+	account := *accP
+	fmt.Println("pwd", commons.CryptPrivate(password, commons.CRYPT_SETTING))
+	fmt.Println("acc pwd", accP.Password)
 
 	if !commons.PortableHashCheck(password, account.Password) {
 		err := fmt.Errorf("wrong password for your account")
