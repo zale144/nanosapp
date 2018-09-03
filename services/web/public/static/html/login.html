@@ -56,7 +56,7 @@
                                     <!-- Button -->
                                     <div class="controls">
                                         <button class="btn btn-success" onclick="event.preventDefault();
-                                                    const errContainer = document.getElementById('error-container');
+                                                    const errContainer = document.getElementById('l-error-container');
                                                     errContainer.innerHTML = '<img src=/static/image/ajax-loader.gif />';
                                                     let headers = new Headers();
                                                     headers.set('Authorization', 'Basic ' + btoa(document.getElementById('l-username').value +
@@ -85,7 +85,7 @@
                                                         })
                                                     })
                                     ">Login</button>
-                                        <span style="margin-left: 20px; color:red;" id="error-container"></span>
+                                        <span style="margin-left: 20px; color:red;" id="l-error-container"></span>
                                     </div>
                                 </div>
                             </form>
@@ -117,7 +117,7 @@
                                     <!-- Button -->
                                     <div class="controls">
                                         <button class="btn btn-success" onclick="event.preventDefault();
-                                                        const errContainer = document.getElementById('error-container');
+                                                        const errContainer = document.getElementById('r-error-container');
                                                         errContainer.innerHTML = '<img src=/static/image/ajax-loader.gif />';
                                                         fetch('/register', {
                                                             method: 'POST',
@@ -151,7 +151,7 @@
                                                             })
                                                         })
                                         ">Register</button>
-                                        <span style="margin-left: 20px; color:red;" id="error-container"></span>
+                                        <span style="margin-left: 20px; color:red;" id="r-error-container"></span>
                                     </div>
                                 </div>
                             </form>

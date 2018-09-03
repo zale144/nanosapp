@@ -29,9 +29,15 @@
   version = "v0.1.0"
 
 [[projects]]
-  digest = "1:97df918963298c287643883209a2c3f642e6593379f97ab400c2a2e219ab647d"
+  digest = "1:ae0036fa14b41c52607c53fa072ef5045ec5f9013ed569e6a5fa19dd5e2ac89a"
   name = "github.com/golang/protobuf"
-  packages = ["proto"]
+  packages = [
+    "proto",
+    "ptypes",
+    "ptypes/any",
+    "ptypes/duration",
+    "ptypes/timestamp",
+  ]
   pruneopts = "UT"
   revision = "aa810b61a9c79d51363740d207bb46cf8e620ed5"
   version = "v1.2.0"
@@ -70,6 +76,14 @@
   pruneopts = "UT"
   revision = "d6574a5bb1226678d7010325fb6c985db20ee458"
   version = "v0.8.1"
+
+[[projects]]
+  digest = "1:3e551bbb3a7c0ab2a2bf4660e7fcad16db089fdcfbb44b0199e62838038623ea"
+  name = "github.com/json-iterator/go"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "1624edc4454b8682399def8740d46db5e4362ba4"
+  version = "v1.1.5"
 
 [[projects]]
   digest = "1:ed322f61bf6c6a69a378a856f60773e2d12285e8725fa47d1effa51076e5aef3"
@@ -120,6 +134,14 @@
   revision = "8b9d33ec2f19cfe2fe9f448f18b033c004c18fd2"
 
 [[projects]]
+  digest = "1:7984d4f0cdaf14595e27a91315ee2b8ac12f1ac53e3e2ee53ca90e1ddb4da7f1"
+  name = "github.com/micro/go-grpc"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "52024085c07e420ed8795c95006255a75feb500e"
+  version = "v0.3.0"
+
+[[projects]]
   branch = "master"
   digest = "1:1ba6e7291c93f36a9eef6628caaed64a82b1da2508d01f6347c7936f5c2531f6"
   name = "github.com/micro/go-log"
@@ -160,12 +182,71 @@
   version = "v0.11.0"
 
 [[projects]]
+  digest = "1:6d06f928025fc4e5ffc442b3617460884cc3c944486263464f0a7c13bde9336a"
+  name = "github.com/micro/go-plugins"
+  packages = [
+    "client/grpc",
+    "registry/kubernetes",
+    "registry/kubernetes/client",
+    "registry/kubernetes/client/api",
+    "registry/kubernetes/client/watch",
+    "selector/cache",
+    "selector/static",
+    "server/grpc",
+  ]
+  pruneopts = "UT"
+  revision = "ef99d1c8d00bae39357b58bb3ff53486a8482484"
+  version = "v0.12.1"
+
+[[projects]]
   branch = "master"
   digest = "1:7243b71c52f5226ed26340e9bbffd702484c152caa2e78234f4384a8309dcafb"
   name = "github.com/micro/go-rcache"
   packages = ["."]
   pruneopts = "UT"
   revision = "a581a57b513351792b9f21fc8b95d87b1c5a95da"
+
+[[projects]]
+  branch = "master"
+  digest = "1:d3b49d2b385f5ac7c2e2e2c9552abba542097f35366aa56d673e89d6c6c705da"
+  name = "github.com/micro/grpc-go"
+  packages = [
+    ".",
+    "balancer",
+    "balancer/base",
+    "balancer/roundrobin",
+    "codes",
+    "connectivity",
+    "credentials",
+    "encoding",
+    "encoding/proto",
+    "internal",
+    "internal/backoff",
+    "internal/channelz",
+    "internal/envconfig",
+    "internal/grpcrand",
+    "keepalive",
+    "logger",
+    "metadata",
+    "naming",
+    "peer",
+    "resolver",
+    "resolver/dns",
+    "resolver/passthrough",
+    "stats",
+    "status",
+    "transport",
+  ]
+  pruneopts = "UT"
+  revision = "c1c2ada0ee9baa897393f1c03baeb28a9515d4a7"
+
+[[projects]]
+  digest = "1:f4e23216c844a5d78d54a792e82aa46a1904357b0f3aa5c44cc2c667316087b3"
+  name = "github.com/micro/kubernetes"
+  packages = ["go/micro"]
+  pruneopts = "UT"
+  revision = "1b3cb85ccc7a367049117e263edc1a26a98b20b5"
+  version = "v0.1.0"
 
 [[projects]]
   branch = "master"
@@ -177,10 +258,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:bcc641879298f0c0e3645c079c902b7aa0668fdb666222008f053af6ae063332"
+  digest = "1:de068438dbdd3504d5fd65df7b1904d828c5ba38b3eec1efe99b27700ba5ce4a"
   name = "github.com/micro/util"
   packages = [
     "go/lib/addr",
+    "go/lib/grpc",
     "go/lib/net",
     "go/lib/tls",
   ]
@@ -220,6 +302,22 @@
   version = "v1.0.0"
 
 [[projects]]
+  digest = "1:33422d238f147d247752996a26574ac48dcf472976eda7f5134015f06bf16563"
+  name = "github.com/modern-go/concurrent"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "bacd9c7ef1dd9b15be4a9909b8ac7a4e313eec94"
+  version = "1.0.3"
+
+[[projects]]
+  digest = "1:e32bdbdb7c377a07a9a46378290059822efdce5c8d96fe71940d87cb4f918855"
+  name = "github.com/modern-go/reflect2"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "4b7aa43c6742a2c18fdef89dd197aaae7dac7ccd"
+  version = "1.0.1"
+
+[[projects]]
   digest = "1:361de06aa7ae272616cbe71c3994a654cc6316324e30998e650f7765b20c5b33"
   name = "github.com/pborman/uuid"
   packages = ["."]
@@ -257,7 +355,7 @@
   name = "github.com/zale144/nanosapp"
   packages = ["services/account/proto"]
   pruneopts = "UT"
-  revision = "8e70adb3f54d4f79a19a245ddb438a749d663a83"
+  revision = "3296d29383daa1717c111ea848f2ff05a12fbac7"
 
 [[projects]]
   branch = "master"
@@ -274,15 +372,21 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:df1870ac4da6ec3585a6d72cc523ad2c9b37820f85069bdf6c93a57c3b7b608d"
+  digest = "1:86987bc4af6a2e18c56fde55c4d6be8a971e100988dcfb59d3cdcc1bb2ba21b3"
   name = "golang.org/x/net"
   packages = [
     "bpf",
     "context",
+    "http/httpguts",
+    "http2",
+    "http2/hpack",
+    "idna",
     "internal/iana",
     "internal/socket",
+    "internal/timeseries",
     "ipv4",
     "ipv6",
+    "trace",
   ]
   pruneopts = "UT"
   revision = "8a410e7b638dca158bf9e766925842f6651ff828"
@@ -295,6 +399,37 @@
   pruneopts = "UT"
   revision = "2b024373dcd9800f0cae693839fac6ede8d64a8c"
 
+[[projects]]
+  digest = "1:7509ba4347d1f8de6ae9be8818b0cd1abc3deeffe28aeaf4be6d4b6b5178d9ca"
+  name = "golang.org/x/text"
+  packages = [
+    "collate",
+    "collate/build",
+    "internal/colltab",
+    "internal/gen",
+    "internal/tag",
+    "internal/triegen",
+    "internal/ucd",
+    "language",
+    "secure/bidirule",
+    "transform",
+    "unicode/bidi",
+    "unicode/cldr",
+    "unicode/norm",
+    "unicode/rangetable",
+  ]
+  pruneopts = "UT"
+  revision = "f21a4dfb5e38f5895301dc265a8def02365cc3d0"
+  version = "v0.3.0"
+
+[[projects]]
+  branch = "master"
+  digest = "1:077c1c599507b3b3e9156d17d36e1e61928ee9b53a5b420f10f28ebd4a0b275c"
+  name = "google.golang.org/genproto"
+  packages = ["googleapis/rpc/status"]
+  pruneopts = "UT"
+  revision = "11092d34479b07829b72e10713b159248caf5dad"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
@@ -304,6 +439,7 @@
     "github.com/labstack/echo",
     "github.com/labstack/echo/middleware",
     "github.com/micro/go-micro",
+    "github.com/micro/kubernetes/go/micro",
     "github.com/zale144/nanosapp/services/account/proto",
   ]
   solver-name = "gps-cdcl"

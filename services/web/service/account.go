@@ -31,7 +31,7 @@ func (as AccountService) Login(c echo.Context) error {
 	}
 	account, err := client.AccountClient{}.Get(username)
 	if err != nil {
-		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
+		log.Println(err)
 		return err
 	}
 	if account == nil {
@@ -93,9 +93,9 @@ func (as AccountService) Register(c echo.Context) error {
 	username,
 	password,
 	confirmPassword :=
-		c.Param("username"),
-		c.Param("password"),
-		c.Param("confirmPassword")
+		c.FormValue("username"),
+		c.FormValue("password"),
+		c.FormValue("confirmPassword")
 
 	if username == "" {
 		err := fmt.Errorf("Username is required")
