@@ -1,4 +1,4 @@
-	# compile proto bufers
+# compile proto bufers
 proto_account:
 	protoc --proto_path=$(GOPATH)/src:. --micro_out=. --go_out=. services/account/proto/account.proto
 
@@ -28,5 +28,46 @@ dep_adcampaign:
 
 dep: dep_web dep_account dep_adcampaign
 
-git:
+git_push:
 	git add . && git commit -m "fix" && git push
+
+# deploy to Kubernetes
+deploy_web:
+	kubectl apply -f deployments/web/deployment.yaml
+	kubectl apply -f deployments/web/service.yaml
+
+deploy_account:
+	kubectl apply -f deployments/account/deployment.yaml
+	kubectl apply -f deployments/account/service.yaml
+
+deploy_adcampaign:
+	kubectl apply -f deployments/adCampaign/deployment.yaml
+	kubectl apply -f deployments/adCampaign/service.yaml
+
+deploy_dbs:
+	kubectl apply -f deployments/db/account/volume.yaml
+	kubectl apply -f deployments/db/account/deployment.yaml
+	kubectl apply -f deployments/db/account/service.yaml
+	kubectl apply -f deployments/db/adCampaign/storage.yaml
+	kubectl apply -f deployments/db/adCampaign/deployment.yaml
+	kubectl apply -f deployments/db/adCampaign/service.yaml
+	
+deploy: deploy_dbs deploy_web deploy_account deploy adcampaign
+
+	
+# clean unused docker images and containers
+clean:
+	@echo "Remove all non running containers"
+	-docker rm `docker ps -q -f status=exited`
+	@echo "Delete all untagged/dangling (<none>) images"
+	-docker rmi `docker images -q -f dangling=true`
+	
+# all steps for 
+web: git_push dep_web build_web deploy_web
+	
+account: proto_account git_push dep_account build_account deploy_account
+	
+adcampaign: proto_adcampaign git_push dep_adcampaign build_adcampaign deploy_adcampaign
+	
+all: deploy_dbs web acount adcampaign
+	
