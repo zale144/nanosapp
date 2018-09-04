@@ -351,11 +351,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:ec7d27bfd9fcf43cf3aa25fee0b064ea3164905e32b356c0a0ada5b3185af901"
+  digest = "1:723b1040ac78a1f950abf5703f8dc38fc09247e378af60baa7e17cf4423f7b80"
   name = "github.com/zale144/nanosapp"
-  packages = ["services/account/proto"]
+  packages = [
+    "services/account/proto",
+    "services/adCampaign/proto",
+  ]
   pruneopts = "UT"
-  revision = "3f15c2aac99f3289b31df707a8c240ad7c87d467"
+  revision = "2839012f54a452384470774876d0de629130e3a7"
 
 [[projects]]
   branch = "master"
@@ -441,6 +444,7 @@
     "github.com/micro/go-micro",
     "github.com/micro/kubernetes/go/micro",
     "github.com/zale144/nanosapp/services/account/proto",
+    "github.com/zale144/nanosapp/services/adCampaign/proto",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

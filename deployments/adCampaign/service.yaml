@@ -4,10 +4,10 @@ metadata:
   name: adcampaign
   namespace: default
   labels:
-      app: adCampaign
+      app: adcampaign
 spec:
   ports:
   - protocol: "TCP"
     port: 8080
   selector:
-      app: adCampaign
+      app: adcampaign

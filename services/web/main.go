@@ -3,7 +3,6 @@ package main
 import (
 	"os"
 	"io"
-	"fmt"
 	"log"
 	"net/http"
 	"html/template"
@@ -50,12 +49,10 @@ func main() {
 	a.Use(authMiddleware)
 	a.GET("/home", func(c echo.Context) error {
 		data := map[string]interface{}{
-			"ApiURL":   commons.ApiURL,
+			"ApiURL":   os.Getenv("API_HOST"),
 		}
 		return c.Render(http.StatusOK, "home", data)
 	})
-
-	commons.ApiURL = os.Getenv("API_HOST")
 
 	api := e.Group("/api/v1")
 	// Configure middleware with the custom claims type
@@ -101,12 +98,11 @@ func authMiddleware(next echo.HandlerFunc) echo.HandlerFunc {
 			if login == "" {
 				return c.Redirect(http.StatusTemporaryRedirect, "/login")
 			}
-			acc, err := client.AccountClient{}.Get(login)
+			_, err := client.AccountClient{}.Get(login)
 			if err != nil {
 				service.AccountService{}.Logout(c)
 				return c.Redirect(http.StatusTemporaryRedirect, "/login")
 			}
-			fmt.Println(acc)
 			c.Request().Header.Set(commons.HEADER_AUTH_USER_ID, login)
 			return next(c)
 		}

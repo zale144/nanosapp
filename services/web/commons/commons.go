@@ -13,7 +13,6 @@ const (
 )
 
 var (
-	ApiURL string
 	Service micro.Service
 )
 

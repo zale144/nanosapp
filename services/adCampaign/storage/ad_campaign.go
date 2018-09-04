@@ -5,7 +5,6 @@ import (
 	"gopkg.in/mgo.v2"
 	"log"
 	"github.com/zale144/nanosapp/services/adCampaign/model"
-	"fmt"
 )
 
 type AdCampaignStorage struct {
@@ -38,7 +37,6 @@ func (m *AdCampaignStorage) GetAll() ([]model.AdCampaign, error) {
 // Insert adds an ad campaign into the database
 func (m *AdCampaignStorage) Insert(adCampaign model.AdCampaign) error {
 	err := DB.C(COLLECTION).Insert(&adCampaign)
-	fmt.Println("SAVED: ", adCampaign.ID)
 	return err
 }
 
