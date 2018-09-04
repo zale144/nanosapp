@@ -53,7 +53,7 @@ class AdCampaignModal extends React.Component {
                 dialogClassName="ac-modal"
             >
                 <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-lg">Ad campaign with ID #{adCampaign.id}</Modal.Title>
+                    <Modal.Title id="contained-modal-title-lg">Ad campaign with ID #{adCampaign.ID}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{}}>
                     <AdCampaign adCampaign={adCampaign} />
@@ -86,7 +86,7 @@ class AdCampaigns extends React.Component {
     }
 
     activateAdCampaign(adCampaignId) {
-        const filteredAdCampaigns = this.props.data.filter(ac => ac.id == adCampaignId);
+        const filteredAdCampaigns = this.props.data.filter(ac => ac.ID === adCampaignId);
         const activeAdCampaign = filteredAdCampaigns[0] || null;
         this.setState({
             activeAdCampaign: activeAdCampaign
@@ -110,11 +110,11 @@ class AdCampaigns extends React.Component {
                     <tbody>
                     {this.props.data.map(v => {
                         return <tr>
-                                <td><a onClick={() => this.activateAdCampaign(v.id)}>#{v.id}</a></td>
-                                <td>{v.name}</td>
-                                <td>{v.goal}</td>
-                                <td>{v.total_budget}</td>
-                                <td>{v.status}</td>
+                                <td><a onClick={() => this.activateAdCampaign(v.ID)}>#{v.ID}</a></td>
+                                <td>{v.Name}</td>
+                                <td>{v.Goal}</td>
+                                <td>{v.TotalBudget}</td>
+                                <td>{v.Status}</td>
                             </tr>
                     })}
                     </tbody>
@@ -137,7 +137,7 @@ class AdCampaign extends React.Component {
                             return (
                                 <React.Fragment>
                                     <div className={"col-md-2"}>
-                                        <b style={{"text-transform": "capitalize"}}>{k.split('_').join(' ')}</b>
+                                        <b>{k}</b>
                                     </div>
                                     <div className={"col-md-10"}>
                                         <div>{this.props.adCampaign[k]}</div>
@@ -151,7 +151,7 @@ class AdCampaign extends React.Component {
                         <b>Platforms</b>
                     </div>
                     <div className={"col-md-10"}>
-                        <TablePlatform data={this.props.adCampaign.platforms}/>
+                        <TablePlatform data={this.props.adCampaign.Platforms}/>
                     </div>
                 </div>
 
@@ -165,8 +165,8 @@ const TableAttr = (props) => {
             {Object.keys(props.data).map((k) => {
                 return (
                     <tr>
-                        <th style={{"text-transform": "capitalize"}}>{k.split('_').join(' ')}</th>
-                        <td>{k==='image'?<img src={props.data[k]}/>:props.data[k].toString()}</td>
+                        <th>{k}</th>
+                        <td>{k==='Image'?<img src={'/static/image/'+props.data[k]} height="42" width="42"/>:props.data[k].toString()}</td>
                     </tr>
                 )
             })}
@@ -185,7 +185,7 @@ const TablePlatform = (props) => {
                     {Object.keys(props.data).map((k) => {
                         return (
                             <th>
-                                <th style={{"text-transform": "capitalize"}}>{k}</th>
+                                <th>{k}</th>
                             </th>
                         )
                     })}
@@ -196,7 +196,7 @@ const TablePlatform = (props) => {
                     return (
                         <tr>
                             <td>
-                                <b style={{"text-transform": "capitalize"}}>{a.split('_').join(' ')}</b>
+                                <b>{a}</b>
                             </td>
                                 {Object.keys(props.data).map((k) => {
                                     if (!props.data[k][a]) {
@@ -206,7 +206,7 @@ const TablePlatform = (props) => {
                                         return <td><TableAttr data={props.data[k][a]}/></td>
                                     }
                                     return (
-                                        <td>{props.data[k][a]}</td>
+                                        <td>{a.includes('Date')?moment(props.data[k][a]).format('DD.MM.YYYY'):props.data[k][a]}</td>
                                     )
                                 })}
                         </tr>
