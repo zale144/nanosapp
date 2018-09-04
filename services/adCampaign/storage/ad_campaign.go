@@ -4,7 +4,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"gopkg.in/mgo.v2"
 	"log"
-	proto "github.com/zale144/nanosapp/services/adCampaign/proto"
+	"github.com/zale144/nanosapp/services/adCampaign/model"
 )
 
 type AdCampaignStorage struct {
@@ -28,14 +28,14 @@ func (m *AdCampaignStorage) Connect() {
 }
 
 // GetAll fetches a list of ad campaigns
-func (m *AdCampaignStorage) GetAll() ([]*proto.AdCampaign, error) {
-	var adCampaigns []*proto.AdCampaign
+func (m *AdCampaignStorage) GetAll() ([]model.AdCampaign, error) {
+	var adCampaigns []model.AdCampaign
 	err := DB.C(COLLECTION).Find(bson.M{}).All(&adCampaigns)
 	return adCampaigns, err
 }
 
 // Insert adds an ad campaign into the database
-func (m *AdCampaignStorage) Insert(adCampaign proto.AdCampaign) error {
+func (m *AdCampaignStorage) Insert(adCampaign model.AdCampaign) error {
 	err := DB.C(COLLECTION).Insert(&adCampaign)
 	return err
 }

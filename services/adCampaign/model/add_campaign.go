@@ -16,14 +16,14 @@ type Platforms struct {
 }
 
 type Platform struct {
-	Status          string 		   `json:"status",bson:"status"`
-	TotalBudget     int64    	   `json:"total_budget",bson:"total_budget"`
-	RemainingBudget int64    	   `json:"remaining_budget",bson:"remaining_budget"`
-	StartDate       int64  		   `json:"start_date",bson:"start_date"`
-	EndDate         int64  		   `json:"end_date",bson:"end_date"`
+	Status          string 		    `json:"status",bson:"status"`
+	TotalBudget     int64    	    `json:"total_budget",bson:"total_budget"`
+	RemainingBudget int64    	    `json:"remaining_budget",bson:"remaining_budget"`
+	StartDate       int64  		    `json:"start_date",bson:"start_date"`
+	EndDate         int64  		    `json:"end_date",bson:"end_date"`
 	TargetAudiance  *TargetAudiance `json:"target_audiance",bson:"target_audiance"`
-	Creatives 		*Creatives	   `json:"creatives",bson:"creatives"`
-	Insights 		*Insights	   `json:"insights",bson:"insights"`
+	Creatives 		*Creatives	    `json:"creatives",bson:"creatives"`
+	Insights 		*Insights	    `json:"insights",bson:"insights"`
 }
 
 type TargetAudiance struct {
@@ -31,7 +31,7 @@ type TargetAudiance struct {
 	Genders   []string `json:"genders",bson:"genders"`
 	AgeRange  []int64  `json:"age_range",bson:"age_range"`
 	Locations []string `json:"locations",bson:"locations"`
-	KeyWords  []string `json:"KeyWords",bson:"KeyWords"`
+	KeyWords  []string `json:"keyWords",bson:"keyWords"`
 	Interests []string `json:"interests",bson:"interests"`
 }
 
