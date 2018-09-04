@@ -32,6 +32,10 @@ git_push:
 	git add . && git commit -m "fix" && git push
 
 # deploy to Kubernetes
+reg: 
+	minikube docker-env
+	eval $(minikube docker-env)
+	
 deploy_web:
 	kubectl replace --force -f deployments/web/deployment.yaml
 	kubectl replace --force -f deployments/web/service.yaml
