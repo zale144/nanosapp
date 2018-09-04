@@ -358,7 +358,7 @@
     "services/adCampaign/proto",
   ]
   pruneopts = "UT"
-  revision = "2839012f54a452384470774876d0de629130e3a7"
+  revision = "971385c92e0343b96766a0ff5d16a3f4fbd7bc49"
 
 [[projects]]
   branch = "master"

@@ -11,7 +11,7 @@ type AdCampaignClient struct {}
 func (ac AdCampaignClient) GetAll() ([]*ad.AdCampaign, error) {
 
 	adClient := ad.NewAdCampaignService("adcampaign", commons.Service.Client())
-	adCampaignRsp, err := adClient.GetAll(context.TODO(), nil)
+	adCampaignRsp, err := adClient.GetAll(context.TODO(), &ad.Request{Token: ""})
 	if err != nil {
 		return nil, err
 	}
