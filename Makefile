@@ -4,7 +4,7 @@ proto_account:
 
 proto_adcampaign:
 	protoc --proto_path=$(GOPATH)/src:. --micro_out=. --go_out=. services/adCampaign/proto/adCampaign.proto && \
-	cd services/adCampaign/proto && ls *.pb.go | xargs -n1 -IX bash -c 'sed s/,omitempty// X > X.tmp && mv X{.tmp,}'
+	cd services/adCampaign/proto && ls *.pb.go | xargs -n1 -IX bash -c "sed -e '/int64/ s/,omitempty//' X > X.tmp && mv X{.tmp,}"
 
 proto: proto_account proto_adcampaign
 

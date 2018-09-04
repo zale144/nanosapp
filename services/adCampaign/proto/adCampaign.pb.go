@@ -19,7 +19,7 @@ var _ = math.Inf
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
 type Request struct {
-	Token                string   `protobuf:"bytes,1,opt,name=token,proto3" json:"token"`
+	Token                string   `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -57,7 +57,7 @@ func (m *Request) GetToken() string {
 }
 
 type Response struct {
-	AdCampaigns          []*AdCampaign `protobuf:"bytes,1,rep,name=AdCampaigns,proto3" json:"AdCampaigns"`
+	AdCampaigns          []*AdCampaign `protobuf:"bytes,1,rep,name=AdCampaigns,proto3" json:"AdCampaigns,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
 	XXX_unrecognized     []byte        `json:"-"`
 	XXX_sizecache        int32         `json:"-"`
@@ -96,11 +96,11 @@ func (m *Response) GetAdCampaigns() []*AdCampaign {
 
 type AdCampaign struct {
 	ID                   int64      `protobuf:"varint,1,opt,name=ID,proto3" json:"ID"`
-	Name                 string     `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name"`
-	Goal                 string     `protobuf:"bytes,3,opt,name=Goal,proto3" json:"Goal"`
+	Name                 string     `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
+	Goal                 string     `protobuf:"bytes,3,opt,name=Goal,proto3" json:"Goal,omitempty"`
 	TotalBudget          int64      `protobuf:"varint,4,opt,name=TotalBudget,proto3" json:"TotalBudget"`
-	Status               string     `protobuf:"bytes,5,opt,name=Status,proto3" json:"Status"`
-	Platforms            *Platforms `protobuf:"bytes,6,opt,name=Platforms,proto3" json:"Platforms"`
+	Status               string     `protobuf:"bytes,5,opt,name=Status,proto3" json:"Status,omitempty"`
+	Platforms            *Platforms `protobuf:"bytes,6,opt,name=Platforms,proto3" json:"Platforms,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}   `json:"-"`
 	XXX_unrecognized     []byte     `json:"-"`
 	XXX_sizecache        int32      `json:"-"`
@@ -173,9 +173,9 @@ func (m *AdCampaign) GetPlatforms() *Platforms {
 }
 
 type Platforms struct {
-	Facebook             *Platform `protobuf:"bytes,1,opt,name=Facebook,proto3" json:"Facebook"`
-	Instagram            *Platform `protobuf:"bytes,2,opt,name=Instagram,proto3" json:"Instagram"`
-	Google               *Platform `protobuf:"bytes,3,opt,name=Google,proto3" json:"Google"`
+	Facebook             *Platform `protobuf:"bytes,1,opt,name=Facebook,proto3" json:"Facebook,omitempty"`
+	Instagram            *Platform `protobuf:"bytes,2,opt,name=Instagram,proto3" json:"Instagram,omitempty"`
+	Google               *Platform `protobuf:"bytes,3,opt,name=Google,proto3" json:"Google,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}  `json:"-"`
 	XXX_unrecognized     []byte    `json:"-"`
 	XXX_sizecache        int32     `json:"-"`
@@ -227,14 +227,14 @@ func (m *Platforms) GetGoogle() *Platform {
 }
 
 type Platform struct {
-	Status               string          `protobuf:"bytes,1,opt,name=Status,proto3" json:"Status"`
+	Status               string          `protobuf:"bytes,1,opt,name=Status,proto3" json:"Status,omitempty"`
 	TotalBudget          int64           `protobuf:"varint,2,opt,name=TotalBudget,proto3" json:"TotalBudget"`
 	RemainingBudget      int64           `protobuf:"varint,3,opt,name=RemainingBudget,proto3" json:"RemainingBudget"`
 	StartDate            int64           `protobuf:"varint,4,opt,name=StartDate,proto3" json:"StartDate"`
 	EndDate              int64           `protobuf:"varint,5,opt,name=EndDate,proto3" json:"EndDate"`
-	TargetAudiance       *TargetAudiance `protobuf:"bytes,6,opt,name=TargetAudiance,proto3" json:"TargetAudiance"`
-	Creatives            *Creatives      `protobuf:"bytes,7,opt,name=Creatives,proto3" json:"Creatives"`
-	Insights             *Insights       `protobuf:"bytes,8,opt,name=Insights,proto3" json:"Insights"`
+	TargetAudiance       *TargetAudiance `protobuf:"bytes,6,opt,name=TargetAudiance,proto3" json:"TargetAudiance,omitempty"`
+	Creatives            *Creatives      `protobuf:"bytes,7,opt,name=Creatives,proto3" json:"Creatives,omitempty"`
+	Insights             *Insights       `protobuf:"bytes,8,opt,name=Insights,proto3" json:"Insights,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
@@ -321,12 +321,12 @@ func (m *Platform) GetInsights() *Insights {
 }
 
 type TargetAudiance struct {
-	Languages            []string `protobuf:"bytes,1,rep,name=Languages,proto3" json:"Languages"`
-	Genders              []string `protobuf:"bytes,2,rep,name=Genders,proto3" json:"Genders"`
+	Languages            []string `protobuf:"bytes,1,rep,name=Languages,proto3" json:"Languages,omitempty"`
+	Genders              []string `protobuf:"bytes,2,rep,name=Genders,proto3" json:"Genders,omitempty"`
 	AgeRange             []int64  `protobuf:"varint,3,rep,packed,name=AgeRange,proto3" json:"AgeRange"`
-	Locations            []string `protobuf:"bytes,4,rep,name=Locations,proto3" json:"Locations"`
-	KeyWords             []string `protobuf:"bytes,5,rep,name=KeyWords,proto3" json:"KeyWords"`
-	Interests            []string `protobuf:"bytes,6,rep,name=Interests,proto3" json:"Interests"`
+	Locations            []string `protobuf:"bytes,4,rep,name=Locations,proto3" json:"Locations,omitempty"`
+	KeyWords             []string `protobuf:"bytes,5,rep,name=KeyWords,proto3" json:"KeyWords,omitempty"`
+	Interests            []string `protobuf:"bytes,6,rep,name=Interests,proto3" json:"Interests,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -399,12 +399,12 @@ func (m *TargetAudiance) GetInterests() []string {
 }
 
 type Creatives struct {
-	Header               string   `protobuf:"bytes,1,opt,name=Header,proto3" json:"Header"`
-	Header1              string   `protobuf:"bytes,2,opt,name=Header1,proto3" json:"Header1"`
-	Header2              string   `protobuf:"bytes,3,opt,name=Header2,proto3" json:"Header2"`
-	Description          string   `protobuf:"bytes,4,opt,name=Description,proto3" json:"Description"`
-	URL                  string   `protobuf:"bytes,5,opt,name=URL,proto3" json:"URL"`
-	Image                string   `protobuf:"bytes,6,opt,name=Image,proto3" json:"Image"`
+	Header               string   `protobuf:"bytes,1,opt,name=Header,proto3" json:"Header,omitempty"`
+	Header1              string   `protobuf:"bytes,2,opt,name=Header1,proto3" json:"Header1,omitempty"`
+	Header2              string   `protobuf:"bytes,3,opt,name=Header2,proto3" json:"Header2,omitempty"`
+	Description          string   `protobuf:"bytes,4,opt,name=Description,proto3" json:"Description,omitempty"`
+	URL                  string   `protobuf:"bytes,5,opt,name=URL,proto3" json:"URL,omitempty"`
+	Image                string   `protobuf:"bytes,6,opt,name=Image,proto3" json:"Image,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -480,11 +480,11 @@ type Insights struct {
 	Impressions          int64    `protobuf:"varint,1,opt,name=Impressions,proto3" json:"Impressions"`
 	Clicks               int64    `protobuf:"varint,2,opt,name=Clicks,proto3" json:"Clicks"`
 	WebsiteVisits        int64    `protobuf:"varint,3,opt,name=WebsiteVisits,proto3" json:"WebsiteVisits"`
-	CostPerClick         float64  `protobuf:"fixed64,4,opt,name=CostPerClick,proto3" json:"CostPerClick"`
-	ClickThroughRate     float64  `protobuf:"fixed64,5,opt,name=ClickThroughRate,proto3" json:"ClickThroughRate"`
-	AdvancedKpi1         float64  `protobuf:"fixed64,6,opt,name=AdvancedKpi1,proto3" json:"AdvancedKpi1"`
-	AdvancedKpi2         float64  `protobuf:"fixed64,7,opt,name=AdvancedKpi2,proto3" json:"AdvancedKpi2"`
-	NanosScore           float64  `protobuf:"fixed64,8,opt,name=NanosScore,proto3" json:"NanosScore"`
+	CostPerClick         float64  `protobuf:"fixed64,4,opt,name=CostPerClick,proto3" json:"CostPerClick,omitempty"`
+	ClickThroughRate     float64  `protobuf:"fixed64,5,opt,name=ClickThroughRate,proto3" json:"ClickThroughRate,omitempty"`
+	AdvancedKpi1         float64  `protobuf:"fixed64,6,opt,name=AdvancedKpi1,proto3" json:"AdvancedKpi1,omitempty"`
+	AdvancedKpi2         float64  `protobuf:"fixed64,7,opt,name=AdvancedKpi2,proto3" json:"AdvancedKpi2,omitempty"`
+	NanosScore           float64  `protobuf:"fixed64,8,opt,name=NanosScore,proto3" json:"NanosScore,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
