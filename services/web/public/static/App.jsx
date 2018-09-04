@@ -11,6 +11,7 @@ class App extends React.Component {
         this.loadAdCampaigns = this.loadAdCampaigns.bind(this);
     }
 
+    // fetch ad campaigns from the web server
     loadAdCampaigns() {
         fetch(apiURL + '/api/v1/ad-campaigns', {
             method: 'GET',
@@ -41,8 +42,9 @@ class App extends React.Component {
     }
 }
 
+// the modal to display more details about
+// the selected ad campaign
 class AdCampaignModal extends React.Component {
-
     render() {
         const adCampaign = this.props.adCampaign;
         return (
@@ -66,8 +68,8 @@ class AdCampaignModal extends React.Component {
     }
 }
 
+// table overview of the ad campaigns
 class AdCampaigns extends React.Component {
-
     constructor(props) {
         super(props);
 
@@ -124,6 +126,8 @@ class AdCampaigns extends React.Component {
     }
 }
 
+// a detailed representation
+// of a single ad campaign
 class AdCampaign extends React.Component {
     constructor(props) {
         super(props);
@@ -159,6 +163,8 @@ class AdCampaign extends React.Component {
     }
 }
 
+// a way to represent a child object
+// is by a table as an attribute
 const TableAttr = (props) => {
     return (
         <Table responsive>
@@ -166,7 +172,13 @@ const TableAttr = (props) => {
                 return (
                     <tr>
                         <th>{k}</th>
-                        <td>{k==='Image'?<img src={'/static/image/'+props.data[k]} height="42" width="42"/>:props.data[k].toString()}</td>
+                        <td>{k==='Image'?<a href={'/static/image/'+props.data[k]}
+                                               target="_blank"><img
+                                            src={'/static/image/'+props.data[k]}
+                                            height="50"
+                                            width="50"/></a>:
+                            k==='URL'?<a href={props.data[k]}>{props.data[k]}</a>:
+                                props.data[k].toString()}</td>
                     </tr>
                 )
             })}
@@ -174,6 +186,8 @@ const TableAttr = (props) => {
     )
 };
 
+// a table with a single platform's
+// attributes
 const TablePlatform = (props) => {
     return (
         <Table responsive>
@@ -199,7 +213,7 @@ const TablePlatform = (props) => {
                                 <b>{a}</b>
                             </td>
                                 {Object.keys(props.data).map((k) => {
-                                    if (!props.data[k][a]) {
+                                    if (props.data[k][a] === null) {
                                         return
                                     }
                                     if (typeof props.data[k][a] === 'object') {
@@ -218,6 +232,4 @@ const TablePlatform = (props) => {
     )
 };
 
-
 ReactDOM.render(<App />, document.getElementById('root'));
-//registerServiceWorker();
