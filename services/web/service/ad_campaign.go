@@ -10,9 +10,9 @@ import (
 
 type AdCampaignService struct {}
 
+// GetAll handles requests to get all ad campaigns
 func (as AdCampaignService) GetAll(c echo.Context) error {
 
-	//adCampaigns := []ad.AdCampaign{}
 	adCampaigns, err := client.AdCampaignClient{}.GetAll()
 	if err != nil {
 		log.Println(err)
@@ -20,9 +20,5 @@ func (as AdCampaignService) GetAll(c echo.Context) error {
 		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
 		return err
 	}
-	/*for _, a := range adCampaignsP {
-		adCampaigns = append(adCampaigns, *a)
-	}*/
-
 	return c.JSON(http.StatusOK, adCampaigns)
 }

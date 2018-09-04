@@ -8,6 +8,7 @@ import (
 
 type AdCampaignClient struct {}
 
+// GetAll fetches all ad campaigns from the adcampaign microservice
 func (ac AdCampaignClient) GetAll() ([]*ad.AdCampaign, error) {
 
 	adClient := ad.NewAdCampaignService("adcampaign", commons.Service.Client())
