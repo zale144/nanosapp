@@ -3,8 +3,16 @@ syntax = "proto3";
 package account;
 
 service AccountService {
-    rpc Get(Account) returns (Account) {}
-    rpc Add(Account) returns (Account) {}
+    rpc Get(AccountRequest) returns (AccountResponse) {}
+    rpc Add(Account) returns (AccountResponse) {}
+}
+
+message AccountRequest {
+    string username = 1;
+}
+
+message AccountResponse {
+    Account account = 1;
 }
 
 message Account {

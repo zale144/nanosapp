@@ -355,7 +355,7 @@
   name = "github.com/zale144/nanosapp"
   packages = ["services/account/proto"]
   pruneopts = "UT"
-  revision = "8ffa4736d280dd4636213355965bf86896bd8871"
+  revision = "5ac35b4dd0abd3dfd354ab9fdb370db42fcdf2e8"
 
 [[projects]]
   branch = "master"

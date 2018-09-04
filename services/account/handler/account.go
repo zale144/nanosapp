@@ -13,13 +13,13 @@ import (
 type Account struct{}
 
 // Get handles the get account request
-func (m *Account) Get(ctx context.Context, req *proto.Account, rsp *proto.Account) error {
+func (m *Account) Get(ctx context.Context, req *proto.AccountRequest, rsp *proto.AccountResponse) error {
 	account, err := storage.AccountStorage{}.GetByUsername(req.Username)
 	if err != nil {
 		log.Println(err)
 		return err
 	}
-	rsp = &proto.Account{
+	rsp.Account = &proto.Account{
 		Username: account.Username,
 		Password: account.Password,
 	}
@@ -27,7 +27,7 @@ func (m *Account) Get(ctx context.Context, req *proto.Account, rsp *proto.Accoun
 }
 
 // Add handles the add account request
-func (m *Account) Add(ctx context.Context, req *proto.Account, rsp *proto.Account) error {
+func (m *Account) Add(ctx context.Context, req *proto.Account, rsp *proto.AccountResponse) error {
 	err := storage.AccountStorage{}.Insert(model.Account{
 		Username: req.Username,
 		Password: req.Password,
@@ -36,7 +36,7 @@ func (m *Account) Add(ctx context.Context, req *proto.Account, rsp *proto.Accoun
 		log.Println(err)
 		return err
 	}
-	rsp = &proto.Account{
+	rsp.Account = &proto.Account{
 		Username: req.Username,
 	}
 	return nil
