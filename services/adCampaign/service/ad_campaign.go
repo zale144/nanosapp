@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"encoding/json"
 	"github.com/zale144/nanosapp/services/adCampaign/model"
+	"fmt"
 )
 
 // AdCampaignService ...
@@ -43,6 +44,7 @@ func (srv *AdCampaignService) DataImport() error {
 		log.Println(err)
 		return err
 	}
+	fmt.Println(json.Marshal(adCampaigns))
 	// wipe the existing collection
 	err = srv.Storage.DeleteAll()
 	if err != nil {

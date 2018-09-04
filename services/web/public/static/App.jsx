@@ -1,50 +1,18 @@
-const {Table, Tabs, Tab, Modal, Button} = ReactBootstrap;
+const {Table, Modal, Button} = ReactBootstrap;
 let token = localStorage.getItem('access_token');
 let apiURL;
-window.globalReactFunctions = {};
 
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            followedData: [],
-            jobs: [],
-            processed: [],
-            tabKey: 1,
-            filterText: "",
-            instaSearch: false,
-            instaAccount: {},
-            isSending: false,
+            adCampaigns: [],
         };
-        this.processProfile = this.processProfile.bind(this);
-        this.filterChanged = this.filterChanged.bind(this);
-        this.handleSelect = this.handleSelect.bind(this);
-        this.loadJobs = this.loadJobs.bind(this);
-        window.globalReactFunctions.loadJobs = this.loadJobs;
+        this.loadAdCampaigns = this.loadAdCampaigns.bind(this);
     }
 
-    loadFollowed() {
-        fetch(apiURL + '/api/followed', {
-            method: 'GET',
-            headers: new Headers({
-                'Authorization': 'Bearer '+ token,
-            }),
-        })
-        .then(res => res.json())
-        .then(
-            (result) => {
-                this.setState({
-                    followedData: result,
-                });
-            },
-            (error) => {
-                // TODO handle
-            }
-        );
-    }
-
-    loadJobs() {
-        fetch(apiURL + '/api/jobs', {
+    loadAdCampaigns() {
+        fetch(apiURL + '/api/v1/ad-campaigns', {
             method: 'GET',
             headers: new Headers({
                 'Authorization': 'Bearer '+ token,
@@ -54,7 +22,7 @@ class App extends React.Component {
             .then(
                 (result) => {
                     this.setState({
-                        jobs: result,
+                        adCampaigns: result,
                     });
                 },
                 (error) => {
@@ -63,220 +31,32 @@ class App extends React.Component {
             );
     }
 
-    processProfile(user) {
-        this.setState({
-            followedData: this.state.followedData.map(v=>({
-                ...v,
-                isSending: v.Username === user
-            }))
-        });
-
-        fetch(apiURL + '/api/process/' + user + '?crop-h=340&crop-w=270&height=360&width=300&title=Register%20at%20My-Site', {
-            method: 'GET',
-            headers: new Headers({
-                'Authorization': 'Bearer '+ token,
-            }),
-        })
-        .then(res => res.text())
-        .then(
-            ((result) => {
-                this.loadFollowed();
-            }).bind(this),
-            (error) => {
-                // TODO handle
-            }
-        )
-    }
-
-    handleSelect(tabKey) {
-        let refreshProcessed = false;
-        switch (tabKey) {
-            case 1: this.loadFollowed();
-            break;
-            case 2: this.loadJobs();
-            break;
-            case 3: refreshProcessed = !this.state.refreshProcessed;
-            break;
-        }
-        this.setState({
-            tabKey: tabKey,
-            refreshProcessed: refreshProcessed,
-        });
-    }
-
-    filterChanged(e) {
-        this.setState({
-            filterText: e.target.value,
-            instaSearch: false
-        })
-    }
-
-    filterUsers() {
-        return this.state.followedData.filter(v => v.Username.includes(this.state.filterText));
-    }
-
-    searchInstagram() {
-        const username = document.getElementById('search').value;
-        if (username === "") {
-            alert('Search query cannot be empty');
-            return;
-        }
-        fetch(apiURL + '/api/search/' + username, {
-            method: 'GET',
-            headers: new Headers({
-                'Authorization': 'Bearer '+ token,
-            }),
-        })
-        .then(res => res.json())
-        .then(
-            (result) => {
-                this.setState({
-                    instaSearch: true,
-                    instaAccount: result
-                })
-            }
-        );
-    }
-
-    follow() {
-        this.setState({
-            isSending: true
-        });
-        const search = document.getElementById('search');
-        fetch(apiURL + '/api/follow/' + search.value, {
-            method: 'GET',
-            headers: new Headers({
-                'Authorization': 'Bearer '+ token,
-            }),
-        })
-        .then(res => res.json())
-        .then(
-            (result) => {
-                search.value = '';
-                this.setState({
-                    instaSearch: false,
-                    filterText: "",
-                    isSending: false,
-                })
-            }
-        );
-    }
-
     componentDidMount() {
         apiURL = document.getElementById('api').value;
-        this.loadFollowed();
+        this.loadAdCampaigns();
     }
 
     render() {
-        return <Tabs activeKey={this.state.key}
-                     defaultActiveKey={1}
-                     onSelect={this.handleSelect}>
-                    <Tab eventKey={1} title="Followed">
-                        <Followed filterChanged={this.filterChanged.bind(this)}
-                              searchInstagram={this.searchInstagram.bind(this)}
-                              instaSearch={this.state.instaSearch}
-                              filterUsers={this.filterUsers()}
-                              processProfile={this.processProfile.bind(this)}
-                              instaAccount={this.state.instaAccount}
-                              isSending={this.state.isSending}
-                              follow={this.follow.bind(this)}/>
-                    </Tab>
-                    <Tab eventKey={2} title="Jobs">
-                        <NewJob/>
-                        <Jobs data={this.state.jobs}/>
-                    </Tab>
-                        <Tab eventKey={3} title="Processed users">
-                            <Processed refresh={this.state.refreshProcessed}/>
-                        </Tab>
-                </Tabs>;
-
+        return <AdCampaigns data={this.state.adCampaigns}/>
     }
 }
 
-class NewJob extends React.Component {
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            hashtag: "",
-            limit: "",
-            title: ""
-        };
-
-        this.updateValue = this.updateValue.bind(this);
-        this.submitForm = this.submitForm.bind(this);
-    }
-
-    updateValue(e) {
-        const element = e.target;
-        this.setState((prevState) => {
-            let newState = {...prevState};
-            newState[element.name] = element.value;
-            return newState;
-        });
-    }
-
-    submitForm() {
-        const {hashtag, limit, title} = this.state;
-        if (hashtag === "") {
-            alert('hashtag cannot be empty');
-            return;
-        }
-        if (limit === "") {
-            alert('limit cannot be empty');
-            return;
-        }
-        if (title === "") {
-            alert('title cannot be empty');
-            return;
-        }
-        fetch(apiURL + '/api/process-by-hashtag/' + hashtag + '?limit=' + limit + '&crop-h=340&crop-w=270&height=360&width=300&title=' + title, {
-            method: 'GET',
-            headers: new Headers({
-                'Authorization': 'Bearer '+ token,
-            }),
-        })
-            .then(res => res.text())
-            .then(
-                ((result) => {
-                    console.log(result);
-                    window.globalReactFunctions.loadJobs();
-                }).bind(this),
-                (error) => {
-                    // TODO handle
-                }
-            )
-    }
+class AdCampaignModal extends React.Component {
 
     render() {
+        const adCampaign = this.props.adCampaign;
         return (
-            <div className="row" style={{marginTop: "1.5rem"}}>
-                <div className="form-group col-md-4"><input className="form-control" placeholder="Hashtag" name="hashtag" type="text" onChange={this.updateValue} /></div>
-                <div className="form-group col-md-4"><input className="form-control" placeholder="Limit" name="limit" type="number" onChange={this.updateValue} /></div>
-                <div className="form-group col-md-4"><button className="btn btn-info col-md-12" onClick={this.submitForm}>Add Job</button></div>
-                <div className="form-group col-md-12"><textarea className="form-control" placeholder="Message" name="title" style={{resize: "vertical", minHeight: "5em"}} onChange={this.updateValue} /></div>
-            </div>
-        );
-    }
-
-}
-
-class JobModal extends React.Component {
-
-    render() {
-        const job = this.props.job;
-        return (
-            job && <Modal
+            adCampaign && <Modal
                 {...this.props}
                 bsSize="large"
                 aria-labelledby="contained-modal-title-lg"
+                dialogClassName="ac-modal"
             >
                 <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-lg">Current result for job #{job.ID}</Modal.Title>
+                    <Modal.Title id="contained-modal-title-lg">Ad campaign with ID #{adCampaign.id}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body style={{}}>
-                    <Processed job={job} />
+                    <AdCampaign adCampaign={adCampaign} />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button onClick={this.props.onHide}>Close</Button>
@@ -286,78 +66,55 @@ class JobModal extends React.Component {
     }
 }
 
-const Followed = (props) => {
-    return <React.Fragment>
-        <div className="input-group">
-            <input id="search" onChange={props.filterChanged} placeholder="Username..." className="form-control col-md-12" style={{margin: "20px 0"}}/>
-            <span className="input-group-btn">
-                        <button className="btn btn-default" type="button" onClick={props.searchInstagram}>Search</button>
-                    </span>
-        </div>
-        {!props.instaSearch && <Ul data={props.filterUsers}
-                                        onClick={props.processProfile}/>}
-        {
-            props.instaSearch && <li className="list-group-item">
-                <img src={props.instaAccount.profile_pic_url} height="45px" width="45px"/>
-                <span style={{fontSize:'22px', marginLeft:'20px', marginRight:'7px'}}>
-                            {props.instaAccount.username}
-                        </span>
-                {!props.isSending?
-                    <button className="btn btn-success" onClick={props.follow}>Follow</button>
-                    :
-                    <img src="/static/image/ajax-loader.gif" width="25px"/>}
-            </li>
-        }
-    </React.Fragment>
-};
-
-class Jobs extends React.Component {
+class AdCampaigns extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.closeModal = this.closeModal.bind(this);
-        this.activateJob = this.activateJob.bind(this);
+        this.activateAdCampaign = this.activateAdCampaign.bind(this);
 
         this.state = {
-            activeJob: null
+            activeAdCampaign: null
         }
     }
 
     closeModal() {
         this.setState({
-            activeJob: null
+            activeAdCampaign: null
         });
     }
 
-    activateJob(jobId) {
-        const filteredJobs = this.props.data.filter(job => job.ID==jobId);
-        const activeJob = filteredJobs[0] || null;
+    activateAdCampaign(adCampaignId) {
+        const filteredAdCampaigns = this.props.data.filter(ac => ac.id == adCampaignId);
+        const activeAdCampaign = filteredAdCampaigns[0] || null;
         this.setState({
-            activeJob: activeJob
+            activeAdCampaign: activeAdCampaign
         });
     }
 
     render() {
         return (
             <React.Fragment>
-                <JobModal show={!!this.state.activeJob} onHide={this.closeModal} job={this.state.activeJob}/>
+                <AdCampaignModal show={!!this.state.activeAdCampaign} onHide={this.closeModal} adCampaign={this.state.activeAdCampaign}/>
                 <Table responsive>
                     <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Hashtag</th>
-                        <th>Created at</th>
-                        <th>Finished at</th>
+                        <th>Name</th>
+                        <th>Goal</th>
+                        <th>Total budget</th>
+                        <th>Status</th>
                     </tr>
                     </thead>
                     <tbody>
                     {this.props.data.map(v => {
                         return <tr>
-                                <td>{v.ID}</td>
-                                <td><a onClick={() => this.activateJob(v.ID)}>#{v.HashTagName}</a></td>
-                                <td>{moment(v.CreatedAt).format("DD.MM.YYYY, HH:mm:ss")}</td>
-                                <td>{v.FinishedAt?moment.unix(v.FinishedAt).format("DD.MM.YYYY, HH:mm:ss"):''}</td>
+                                <td><a onClick={() => this.activateAdCampaign(v.id)}>#{v.id}</a></td>
+                                <td>{v.name}</td>
+                                <td>{v.goal}</td>
+                                <td>{v.total_budget}</td>
+                                <td>{v.status}</td>
                             </tr>
                     })}
                     </tbody>
@@ -367,129 +124,100 @@ class Jobs extends React.Component {
     }
 }
 
-class Processed extends React.Component {
+class AdCampaign extends React.Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            users: [],
-            page: 1,
-            finished: false,
-            loading: false
-        };
-
-        this.fetchUsers = this.fetchUsers.bind(this);
-    }
-
-    componentDidMount() {
-        this.fetchUsers(null, false);
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        const prevJob = prevProps.job || {};
-        const currentJob = this.props.job || {};
-
-        if(JSON.stringify(prevJob) !== JSON.stringify(currentJob) && this.props.job) {
-            this.setState({
-                users: [],
-                page: 1,
-                finished: false
-            }, function() {
-                this.fetchUsers(null, true);
-            }.bind(this));
-        }
-    }
-
-    componentWillReceiveProps(props) {
-        if (props.refresh) {
-            this.setState({
-                users: [],
-                page: 1,
-                finished: false
-            }, function() {
-                this.fetchUsers(null, true);
-            }.bind(this));
-        }
-    }
-
-    fetchUsers(event, rewrite = false) {
-        this.setState({
-            loading: true
-        });
-        const url = this.props.job?`/api/processed-by-job/${this.props.job.ID}/${this.state.page}`:`/api/processed/${this.state.page}`;
-        fetch(apiURL + url, {
-            method: 'GET',
-            headers: new Headers({
-                'Authorization': 'Bearer '+ token,
-            }),
-        })
-            .then(res => res.json())
-            .then(
-                ((result) => {
-                    this.setState({
-                        users: rewrite?result:this.state.users.slice().concat(result),
-                        page: this.state.page+1,
-                        finished: result.length<10,
-                        loading: false
-                    });
-                }).bind(this),
-                (error) => {
-                    // TODO handle
-                }
-            )
     }
 
     render() {
-        return <Table responsive>
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Hashtag</th>
-                <th>Processed at</th>
-                <th>Successful</th>
-            </tr>
-            </thead>
-            <tbody>
-            {this.state.users.map(v => {
-                return <tr>
-                    <td>{v.ID}</td>
-                    <td>{v.Username}</td>
-                    <td>#{v.Job.HashTagName}</td>
-                    <td>{v.ProcessedAt?moment.unix(v.ProcessedAt).format("DD.MM.YYYY, HH:mm:ss"):''}</td>
-                    <td>{v.Successful?'yes':'no'}</td>
-                </tr>
-            })}
-            </tbody>
-            {!this.state.finished && <button className="btn btn-warning" disabled={this.state.loading} onClick={this.fetchUsers}>Load more</button>}
-        </Table>;
+        return (
+                <div className={"row"}>
+                    {Object.keys(this.props.adCampaign).map(k =>{
+                        if (typeof this.props.adCampaign[k] !== 'object') {
+                            return (
+                                <React.Fragment>
+                                    <div className={"col-md-2"}>
+                                        <b style={{"text-transform": "capitalize"}}>{k.split('_').join(' ')}</b>
+                                    </div>
+                                    <div className={"col-md-10"}>
+                                        <div>{this.props.adCampaign[k]}</div>
+                                    </div>
+                                </React.Fragment>
+                            )
+                        }
+                    })}
+
+                    <div className={"col-md-2"}>
+                        <b>Platforms</b>
+                    </div>
+                    <div className={"col-md-10"}>
+                        <TablePlatform data={this.props.adCampaign.platforms}/>
+                    </div>
+                </div>
+
+        );
     }
 }
 
-const Ul = (props) => {
-    if (!props.data) {
-        return <img src="/static/image/ajax-loader.gif"/>;
-    } else {
-        return <ul className="list-group list-group-flush">
-            {
-                props.data.map((v) => {
-                    const style = {fontSize:'22px', marginLeft:'20px', marginRight:'7px'};
-                    let el = <a onClick={(u) => props.onClick(v.Username)} style={style}>{v.Username}</a>;
-                    if (v.IsSent) {
-                        el = <span><span style={style}>{v.Username}</span><img src="/static/image/sent.png" width="25px"/></span>;
-                    }
-                    if (v.isSending) {
-                        el = <span><span style={style}>{v.Username}</span><img src="/static/image/ajax-loader.gif" width="25px"/></span>;
-                    }
-                    return <li className="list-group-item">
-                                <img src={v.ProfilePicUrl} height="45px" width="45px"/>
-                                {el}
-                            </li>
-                })
-            }
-        </ul>
-    }
+const TableAttr = (props) => {
+    return (
+        <Table responsive>
+            {Object.keys(props.data).map((k) => {
+                return (
+                    <tr>
+                        <th style={{"text-transform": "capitalize"}}>{k.split('_').join(' ')}</th>
+                        <td>{k==='image'?<img src={props.data[k]}/>:props.data[k].toString()}</td>
+                    </tr>
+                )
+            })}
+        </Table>
+    )
 };
+
+const TablePlatform = (props) => {
+    return (
+        <Table responsive>
+            <thead>
+                <tr>
+                    <th>
+                        Attr
+                    </th>
+                    {Object.keys(props.data).map((k) => {
+                        return (
+                            <th>
+                                <th style={{"text-transform": "capitalize"}}>{k}</th>
+                            </th>
+                        )
+                    })}
+                </tr>
+            </thead>
+            <tbody>
+                {Object.keys(props.data[Object.keys(props.data)[0]]).map((a) => {
+                    return (
+                        <tr>
+                            <td>
+                                <b style={{"text-transform": "capitalize"}}>{a.split('_').join(' ')}</b>
+                            </td>
+                                {Object.keys(props.data).map((k) => {
+                                    if (!props.data[k][a]) {
+                                        return
+                                    }
+                                    if (typeof props.data[k][a] === 'object') {
+                                        return <td><TableAttr data={props.data[k][a]}/></td>
+                                    }
+                                    return (
+                                        <td>{props.data[k][a]}</td>
+                                    )
+                                })}
+                        </tr>
+                    )
+                })}
+            </tbody>
+
+        </Table>
+    )
+};
+
 
 ReactDOM.render(<App />, document.getElementById('root'));
 //registerServiceWorker();
