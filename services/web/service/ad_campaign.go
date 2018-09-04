@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"fmt"
 	"log"
-	"encoding/json"
 )
 
 type AdCampaignService struct {}
@@ -21,10 +20,5 @@ func (as AdCampaignService) GetAll(c echo.Context) error {
 		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
 		return err
 	}
-	j, err := json.Marshal(adCampaigns)
-	if err != nil {
-		log.Println(err)
-	}
-	fmt.Println(string(j))
 	return c.JSON(http.StatusOK, adCampaigns)
 }

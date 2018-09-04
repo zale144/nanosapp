@@ -1,1 +1,4 @@
 .idea/
+services/account/vendor
+services/adCampaign/vendor
+services/web/vendor
