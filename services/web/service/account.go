@@ -36,9 +36,6 @@ func (as AccountService) Login(c echo.Context) error {
 		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))
 		return err
 	}
-	fmt.Println("pwd", commons.CryptPrivate(password, commons.CRYPT_SETTING))
-	fmt.Println("acc", account)
-
 	if !commons.PortableHashCheck(password, account.Password) {
 		err := fmt.Errorf("wrong password for your account")
 		c.Error(echo.NewHTTPError(http.StatusBadRequest, err.Error()))

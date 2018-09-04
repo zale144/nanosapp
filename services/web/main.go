@@ -48,15 +48,24 @@ func main() {
 	// ***************** private ***************************
 	a := e.Group("/admin")
 	a.Use(authMiddleware)
-
-	commons.ApiURL = os.Getenv("API_HOST")
-
 	a.GET("/home", func(c echo.Context) error {
 		data := map[string]interface{}{
 			"ApiURL":   commons.ApiURL,
 		}
 		return c.Render(http.StatusOK, "home", data)
 	})
+
+	commons.ApiURL = os.Getenv("API_HOST")
+
+	api := e.Group("/api/v1")
+	// Configure middleware with the custom claims type
+	config := middleware.JWTConfig{
+		Claims:     &commons.JwtCustomClaims{},
+		SigningKey: []byte(commons.SECRET),
+	}
+	api.Use(middleware.JWTWithConfig(config))
+
+	api.GET("/ad-campaigns", service.AdCampaignService{}.GetAll)
 
 	go reqService()
 	e.Logger.Fatal(e.Start(":8081"))
