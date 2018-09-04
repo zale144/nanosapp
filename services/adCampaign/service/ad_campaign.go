@@ -22,7 +22,9 @@ func (srv *AdCampaignService) GetAll(ctx context.Context, req *proto.Request, rs
 		log.Println(err)
 		return err
 	}
-	rsp.AdCampaigns = srv.mapAdCampaignsToProto(adCampaigns...)
+//	rsp.AdCampaigns = srv.mapAdCampaignsToProto(adCampaigns...)
+
+	rsp.AdCampaigns = adCampaigns
 
 	return nil
 }
@@ -37,7 +39,7 @@ func (srv *AdCampaignService) DataImport() error {
 		return err
 	}
 	// unmarshal the json data into a list of AdCampaign structs
-	adCampaigns := []model.AdCampaign{}
+	adCampaigns := []proto.AdCampaign{}
 	err = json.Unmarshal(data, &adCampaigns)
 	if err != nil {
 		log.Println(err)
