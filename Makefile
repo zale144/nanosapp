@@ -33,24 +33,24 @@ git_push:
 
 # deploy to Kubernetes
 deploy_web:
-	kubectl apply -f deployments/web/deployment.yaml
-	kubectl apply -f deployments/web/service.yaml
+	kubectl replace --force -f deployments/web/deployment.yaml
+	kubectl replace --force -f deployments/web/service.yaml
 
 deploy_account:
-	kubectl apply -f deployments/account/deployment.yaml
-	kubectl apply -f deployments/account/service.yaml
+	kubectl replace --force -f deployments/account/deployment.yaml
+	kubectl replace --force -f deployments/account/service.yaml
 
 deploy_adcampaign:
-	kubectl apply -f deployments/adCampaign/deployment.yaml
-	kubectl apply -f deployments/adCampaign/service.yaml
+	kubectl replace --force -f deployments/adCampaign/deployment.yaml
+	kubectl replace --force -f deployments/adCampaign/service.yaml
 
 deploy_dbs:
-	kubectl apply -f deployments/db/account/volume.yaml
-	kubectl apply -f deployments/db/account/deployment.yaml
-	kubectl apply -f deployments/db/account/service.yaml
-	kubectl apply -f deployments/db/adCampaign/storage.yaml
-	kubectl apply -f deployments/db/adCampaign/deployment.yaml
-	kubectl apply -f deployments/db/adCampaign/service.yaml
+	kubectl replace --force -f deployments/db/account/volume.yaml
+	kubectl replace --force -f deployments/db/account/deployment.yaml
+	kubectl replace --force -f deployments/db/account/service.yaml
+	kubectl replace --force -f deployments/db/adCampaign/storage.yaml
+	kubectl replace --force -f deployments/db/adCampaign/deployment.yaml
+	kubectl replace --force -f deployments/db/adCampaign/service.yaml
 	
 deploy: deploy_dbs deploy_web deploy_account deploy adcampaign
 
@@ -69,5 +69,5 @@ account: proto_account git_push dep_account build_account deploy_account
 	
 adcampaign: proto_adcampaign git_push dep_adcampaign build_adcampaign deploy_adcampaign
 	
-all: deploy_dbs web acount adcampaign
+all: deploy_dbs web acount adcampaign clean
 	
