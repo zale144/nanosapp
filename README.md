@@ -39,12 +39,12 @@ same-structured model found in the proto descriptor for persisting to the databa
 At this time, I'm keeping the deployment descriptors in the same repository with the source, but ideally they would 
 be in a separate repository. 
 
-#### Prerequisites:
+### Prerequisites
 
 - Docker
 - Minikube
 
-#### Steps
+### Steps
 - Clone the repository
 
         git clone https://github.com/nanosapp/fullstack-dev-assesment.git
