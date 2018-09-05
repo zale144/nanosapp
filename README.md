@@ -4,11 +4,15 @@ Ad Campaigns is a web application that allows users to register, login and view 
 It's implemented using a Microservice architecture.
 A lot of the implementation patterns and code snippets I've used can be found in my Instagram Bot application.
 
+The reason I've chosen a microservice architecture is, in a case like this, modularity. Adding new features, views or 
+functionality would be as simple as writing a new microservice. One microservice crashing would not bring the whole application 
+down. 
+
 The backend is written in Golang. The reason is because Golang is, among other things, performant, easy to read,
 well suited for writing microservices and is cross-platform.
 
 The frontend is written in React.js. The reason I chose it is because it's lightweight and makes it easy to generalize 
-to various data structures and renders HTML according to the data retrieved from the server.
+to various data structures and render HTML according to the data retrieved from the server.
 The detailed view of ad campaign is a good example of rendering complex structures where some object attributes can be omitted.
 
 I found that displaying the detailed view in a modal simplifies implementation, in a sense that we don't need additional views, 
@@ -20,10 +24,6 @@ Kubernetes provides an easy way to have service discovery by utilizing it's inne
 The database that stores the ad campaigns is MongoDB. Because of a relatively complex structure of the JSON found in
  data.json, I've decided to use a No-SQL database, which will make it easier to store data without having to deal 
  with references between nested objects.
- 
-The reason I've chosen a microservice architecture is, in a case like this, modularity. Adding new features, views or 
-functionality would be as simple as writing a new microservice. One microservice crashing would not bring the whole application 
-down. 
  
 The part where I had a difficulty deciding which path to take is the model. The model is supposed to represent the structure 
 found in the JSON data file. The same structure needs to be implemented in the protocol buffer descriptor file.
@@ -39,12 +39,12 @@ same-structured model found in the proto descriptor for persisting to the databa
 At this time, I'm keeping the deployment descriptors in the same repository with the source, but ideally they would 
 be in a separate repository. 
 
-####Prerequisites:
+#### Prerequisites:
 
 - Docker
 - Minikube
 
-####Steps
+#### Steps
 - Clone the repository
 
         git clone https://github.com/nanosapp/fullstack-dev-assesment.git
