@@ -37,28 +37,26 @@ reg:
 	eval $(minikube docker-env)
 	
 deploy_web:
-	kubectl replace --force -f deployments/web/deployment.yaml
-	kubectl replace --force -f deployments/web/service.yaml
+	kubectl create -f deployments/web/deployment.yaml
+	kubectl create -f deployments/web/service.yaml
 
 deploy_account:
-	kubectl replace --force -f deployments/account/deployment.yaml
-	kubectl replace --force -f deployments/account/service.yaml
+	kubectl create -f deployments/account/deployment.yaml
+	kubectl create -f deployments/account/service.yaml
 
 deploy_adcampaign:
-	kubectl replace --force -f deployments/adCampaign/deployment.yaml
-	kubectl replace --force -f deployments/adCampaign/service.yaml
+	kubectl create -f deployments/adCampaign/deployment.yaml
+	kubectl create -f deployments/adCampaign/service.yaml
 
 deploy_dbs:
-	kubectl replace --force -f deployments/db/account/volume.yaml
-	kubectl replace --force -f deployments/db/account/deployment.yaml
-	kubectl replace --force -f deployments/db/account/service.yaml
-	kubectl replace --force -f deployments/db/adCampaign/storage.yaml
-	kubectl replace --force -f deployments/db/adCampaign/deployment.yaml
-	kubectl replace --force -f deployments/db/adCampaign/service.yaml
+	kubectl create -f deployments/db/account/volume.yaml
+	kubectl create -f deployments/db/account/deployment.yaml
+	kubectl create -f deployments/db/account/service.yaml
+	kubectl create -f deployments/db/adCampaign/deployment.yaml
+	kubectl create -f deployments/db/adCampaign/service.yaml
 	
-deploy: deploy_dbs deploy_web deploy_account deploy adcampaign
+deploy: deploy_dbs deploy_web deploy_account deploy_adcampaign
 
-	
 # clean unused docker images and containers
 clean:
 	@echo "Remove all non running containers"
@@ -73,5 +71,5 @@ account: proto_account git_push dep_account build_account deploy_account
 	
 adcampaign: proto_adcampaign git_push dep_adcampaign build_adcampaign deploy_adcampaign
 	
-all: deploy_dbs web acount adcampaign clean
+all: deploy_dbs build_web deploy_web build_account deploy_account build_adcampaign deploy_adcampaign clean
 	
