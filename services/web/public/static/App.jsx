@@ -11,7 +11,7 @@ class App extends React.Component {
         this.loadAdCampaigns = this.loadAdCampaigns.bind(this);
     }
 
-    // fetch ad campaigns from the web server
+    // fetch ad campaigns from the API
     loadAdCampaigns() {
         fetch(apiURL + '/api/v1/ad-campaigns', {
             method: 'GET',
@@ -45,15 +45,16 @@ class App extends React.Component {
 // the modal to display more details about
 // the selected ad campaign
 class AdCampaignModal extends React.Component {
+
     render() {
         const adCampaign = this.props.adCampaign;
         return (
-            adCampaign && <Modal
+            adCampaign &&
+            <Modal
                 {...this.props}
                 bsSize="large"
                 aria-labelledby="contained-modal-title-lg"
-                dialogClassName="ac-modal"
-            >
+                dialogClassName="ac-modal">
                 <Modal.Header closeButton>
                     <Modal.Title id="contained-modal-title-lg">Ad campaign with ID #{adCampaign.ID}</Modal.Title>
                 </Modal.Header>
@@ -81,12 +82,14 @@ class AdCampaigns extends React.Component {
         }
     }
 
+    // close the detailed view modal
     closeModal() {
         this.setState({
             activeAdCampaign: null
         });
     }
 
+    // target specific ad campaign matching ID and open the modal showing it
     activateAdCampaign(adCampaignId) {
         const filteredAdCampaigns = this.props.data.filter(ac => ac.ID === adCampaignId);
         const activeAdCampaign = filteredAdCampaigns[0] || null;
@@ -112,12 +115,12 @@ class AdCampaigns extends React.Component {
                     <tbody>
                     {this.props.data.map(v => {
                         return <tr>
-                                <td><a onClick={() => this.activateAdCampaign(v.ID)}>#{v.ID}</a></td>
-                                <td>{v.Name}</td>
-                                <td>{v.Goal}</td>
-                                <td>{v.TotalBudget}</td>
-                                <td>{v.Status}</td>
-                            </tr>
+                                   <td><a onClick={() => this.activateAdCampaign(v.ID)}>#{v.ID}</a></td>
+                                   <td>{v.Name}</td>
+                                   <td>{v.Goal}</td>
+                                   <td>{v.TotalBudget}</td>
+                                   <td>{v.Status}</td>
+                               </tr>
                     })}
                     </tbody>
                 </Table>
@@ -135,30 +138,28 @@ class AdCampaign extends React.Component {
 
     render() {
         return (
-                <div className={"row"}>
-                    {Object.keys(this.props.adCampaign).map(k =>{
-                        if (typeof this.props.adCampaign[k] !== 'object') {
-                            return (
-                                <React.Fragment>
-                                    <div className={"col-md-2"}>
-                                        <b>{k}</b>
-                                    </div>
-                                    <div className={"col-md-10"}>
-                                        <div>{this.props.adCampaign[k]}</div>
-                                    </div>
-                                </React.Fragment>
-                            )
-                        }
-                    })}
-
-                    <div className={"col-md-2"}>
-                        <b>Platforms</b>
-                    </div>
-                    <div className={"col-md-10"}>
-                        <TablePlatform data={this.props.adCampaign.Platforms}/>
-                    </div>
+            <div className={"row"}>
+                {Object.keys(this.props.adCampaign).map(k =>{
+                    if (typeof this.props.adCampaign[k] !== 'object') {
+                        return (
+                            <React.Fragment>
+                                <div className={"col-md-2"}>
+                                    <b>{k}</b>
+                                </div>
+                                <div className={"col-md-10"}>
+                                    <div>{this.props.adCampaign[k]}</div>
+                                </div>
+                            </React.Fragment>
+                        )
+                    }
+                })}
+                <div className={"col-md-2"}>
+                    <b>Platforms</b>
                 </div>
-
+                <div className={"col-md-10"}>
+                    <TablePlatform data={this.props.adCampaign.Platforms}/>
+                </div>
+            </div>
         );
     }
 }
@@ -172,12 +173,12 @@ const TableAttr = (props) => {
                 return (
                     <tr>
                         <th>{k}</th>
-                        <td>{k==='Image'?<a href={'/static/image/'+props.data[k]}
-                                               target="_blank"><img
-                                            src={'/static/image/'+props.data[k]}
-                                            height="50"
-                                            width="50"/></a>:
-                            k==='URL'?<a href={props.data[k]}>{props.data[k]}</a>:
+                        <td>{k==='Image'? <a href={'/static/image/'+props.data[k]}
+                                             target="_blank">
+                                        <img src={'/static/image/'+props.data[k]}
+                                             height="50"
+                                             width="50"/></a>:
+                             k==='URL'?<a href={props.data[k]}>{props.data[k]}</a>:
                                 props.data[k].toString()}</td>
                     </tr>
                 )
@@ -212,22 +213,21 @@ const TablePlatform = (props) => {
                             <td>
                                 <b>{a}</b>
                             </td>
-                                {Object.keys(props.data).map((k) => {
-                                    if (props.data[k][a] === null) {
-                                        return
-                                    }
-                                    if (typeof props.data[k][a] === 'object') {
-                                        return <td><TableAttr data={props.data[k][a]}/></td>
-                                    }
-                                    return (
-                                        <td>{a.includes('Date')?moment(props.data[k][a]).format('DD.MM.YYYY'):props.data[k][a]}</td>
-                                    )
-                                })}
+                            {Object.keys(props.data).map((k) => {
+                                if (props.data[k][a] === null) {
+                                    return
+                                }
+                                if (typeof props.data[k][a] === 'object') {
+                                    return <td><TableAttr data={props.data[k][a]}/></td>
+                                }
+                                return (
+                                    <td>{a.includes('Date')?moment(props.data[k][a]).format('DD.MM.YYYY'):props.data[k][a]}</td>
+                                )
+                            })}
                         </tr>
                     )
                 })}
             </tbody>
-
         </Table>
     )
 };

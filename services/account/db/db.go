@@ -4,10 +4,10 @@ package db
 import (
 	"time"
 
+	"github.com/lib/pq"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/zale144/nanosapp/services/account/model"
-	"github.com/lib/pq"
 )
 
 var (
@@ -31,7 +31,8 @@ func openDB() (*gorm.DB, error) {
 	return PgsqlDB, nil
 }
 
-// InitDB initializes the database and migrates the data
+// InitDB initializes the database and
+// initializes the account table
 func InitDB() error {
 	_, err := openDB()
 	if err != nil {

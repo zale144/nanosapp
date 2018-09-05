@@ -18,7 +18,7 @@ spec:
       	  "--broker_address=0.0.0.0:10001",
       	  "--selector=static",
       	]
-        image: nanosapp/adcampaign:v0.0.1
+        image: livelance/nanoadcampaign:v0.0.1
         env:
           - name: DB_SERVER
             value: "mongo:27017"

@@ -10,13 +10,15 @@ proto: proto_account proto_adcampaign
 
 # build docker images
 build_web:
-	docker build -t nanosapp/web:v0.0.1 services/web
+	docker build -t livelance/nanoweb:v0.0.1 services/web
 
 build_account:
-	docker build -t nanosapp/account:v0.0.1 services/account
+	docker build -t livelance/nanoaccount:v0.0.1 services/account
 
 build_adcampaign:
-	docker build -t nanosapp/adcampaign:v0.0.1 services/adCampaign
+	docker build -t livelance/nanoadcampaign:v0.0.1 services/adCampaign
+
+build: build_web build_account build_adcampaign
 
 # ensure dependencies
 dep_web:
@@ -32,6 +34,9 @@ git_push:
 	git add . && git commit -m "fix" && git push
 
 # deploy to Kubernetes
+kube:
+	kubectl create clusterrolebinding default-admin --clusterrole cluster-admin --serviceaccount=default:default
+
 reg: 
 	minikube docker-env
 	eval $(minikube docker-env)
@@ -71,5 +76,5 @@ account: proto_account git_push dep_account build_account deploy_account
 	
 adcampaign: proto_adcampaign git_push dep_adcampaign build_adcampaign deploy_adcampaign
 	
-all: deploy_dbs build_web deploy_web build_account deploy_account build_adcampaign deploy_adcampaign clean
+all: build deploy clean
 	

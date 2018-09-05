@@ -1,8 +1,8 @@
 package storage
 
 import (
-	"github.com/zale144/nanosapp/services/account/model"
 	"github.com/zale144/nanosapp/services/account/db"
+	"github.com/zale144/nanosapp/services/account/model"
 )
 
 type AccountStorage struct {}
@@ -21,7 +21,7 @@ func (as AccountStorage) GetByUsername(username string) (*model.Account, error) 
 	return &account, nil
 }
 
-// Insert adds an account row to the database
+// Insert adds a row to the account table
 func (as AccountStorage) Insert(account model.Account) error {
 
 	tx := db.PgsqlDB.Begin()

@@ -40,9 +40,9 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		return c.Redirect(http.StatusTemporaryRedirect, "/admin/home")
 	})
-	e.POST("/login", service.AccountService{}.Login)
-	e.GET("/logout", service.AccountService{}.Logout)
-	e.POST("/register", service.AccountService{}.Register)
+	e.POST("/login", service.AccountService{}.Login) // login endpoint
+	e.POST("/register", service.AccountService{}.Register) // register endpoint
+	e.GET("/logout", service.AccountService{}.Logout) // logout endpoint
 
 	// ***************** private ***************************
 	a := e.Group("/admin")
@@ -62,13 +62,16 @@ func main() {
 	}
 	api.Use(middleware.JWTWithConfig(config))
 
-	api.GET("/ad-campaigns", service.AdCampaignService{}.GetAll)
+	api.GET("/ad-campaigns", service.AdCampaignService{}.GetAll) // ad campaigns endpoint
 
+	// register the microservice without blocking execution
 	go reqService()
+	// start the web server
 	e.Logger.Fatal(e.Start(":8081"))
 }
 
 // reqService registers the 'web' microservice
+// to the Kubernetes cluster
 func reqService()  {
 	commons.Service = k8s.NewService(
 		micro.Name("web"),

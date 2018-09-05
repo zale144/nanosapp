@@ -6,7 +6,7 @@
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-    <script type="text/javascript"></script>
+    <script type="text/javascript" src="/static/js/login.js"></script>
     <style>
         .App-header {
             background-color: #222;
@@ -55,36 +55,7 @@
                                 <div class="control-group">
                                     <!-- Button -->
                                     <div class="controls">
-                                        <button class="btn btn-success" onclick="event.preventDefault();
-                                                    const errContainer = document.getElementById('l-error-container');
-                                                    errContainer.innerHTML = '<img src=/static/image/ajax-loader.gif />';
-                                                    let headers = new Headers();
-                                                    headers.set('Authorization', 'Basic ' + btoa(document.getElementById('l-username').value +
-                                                     ':' + document.getElementById('l-password').value));
-                                                    fetch('/login', {
-                                                        method: 'POST',
-                                                        headers: headers,
-                                                        credentials: 'same-origin'
-                                                    })
-                                                    .then(res => {
-                                                        if (!res.ok) {
-                                                            throw res.json();
-                                                        } else {
-                                                            return res.json()
-                                                        }
-                                                    })
-                                                    .then(
-                                                    (result) => {
-                                                        if (result.token) {
-                                                            localStorage.setItem('access_token', result.token);
-                                                            location.href = '/';
-                                                        }
-                                                    }).catch((err) => {
-                                                        err.then(data => {
-                                                            errContainer.innerHTML = data.message;
-                                                        })
-                                                    })
-                                    ">Login</button>
+                                        <button class="btn btn-success" onclick="loginAccount(event)">Login</button>
                                         <span style="margin-left: 20px; color:red;" id="l-error-container"></span>
                                     </div>
                                 </div>
@@ -116,41 +87,7 @@
                                 <div class="control-group">
                                     <!-- Button -->
                                     <div class="controls">
-                                        <button class="btn btn-success" onclick="event.preventDefault();
-                                                        const errContainer = document.getElementById('r-error-container');
-                                                        errContainer.innerHTML = '<img src=/static/image/ajax-loader.gif />';
-                                                        fetch('/register', {
-                                                            method: 'POST',
-                                                            headers: {
-                                                              'Accept': 'application/json',
-                                                              'Content-Type': 'application/json'
-                                                            },
-                                                            body: JSON.stringify({
-                                                                username: document.getElementById('r-username').value,
-                                                                password: document.getElementById('r-password').value,
-                                                                confirmPassword: document.getElementById('r-confirmPassword').value
-                                                            }),
-                                                            credentials: 'same-origin'
-                                                        })
-                                                        .then(res => {
-                                                            if (!res.ok) {
-                                                                throw res.json();
-                                                            } else {
-                                                                return res.json()
-                                                            }
-                                                        })
-                                                        .then(
-                                                        (result) => {
-                                                            if (result.token) {
-                                                                localStorage.setItem('access_token', result.token);
-                                                                location.href = '/';
-                                                            }
-                                                        }).catch((err) => {
-                                                            err.then(data => {
-                                                                errContainer.innerHTML = data.message;
-                                                            })
-                                                        })
-                                        ">Register</button>
+                                        <button class="btn btn-success" onclick="registerAccount(event);">Register</button>
                                         <span style="margin-left: 20px; color:red;" id="r-error-container"></span>
                                     </div>
                                 </div>
@@ -161,5 +98,4 @@
             </div>
         </div>
     </div>
-
 </div></body></html>

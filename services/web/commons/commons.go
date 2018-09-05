@@ -16,7 +16,7 @@ var (
 	Service micro.Service
 )
 
-// jwtCustomClaims are custom claims extending default ones.
+// jwtCustomClaims used for API authorization
 type JwtCustomClaims struct {
 	Name  string `json:"name"`
 	Admin bool   `json:"admin"`

@@ -1,9 +1,10 @@
 package storage
 
 import (
-	"gopkg.in/mgo.v2/bson"
-	"gopkg.in/mgo.v2"
 	"log"
+
+	"gopkg.in/mgo.v2"
+	"gopkg.in/mgo.v2/bson"
 	"github.com/zale144/nanosapp/services/adCampaign/model"
 )
 
@@ -27,20 +28,20 @@ func (m *AdCampaignStorage) Connect() {
 	DB = session.DB(m.Database)
 }
 
-// GetAll fetches a list of ad campaigns
+// GetAll fetches a list of ad campaigns from the 'ad_campaign' collection
 func (m *AdCampaignStorage) GetAll() ([]model.AdCampaign, error) {
 	var adCampaigns []model.AdCampaign
 	err := DB.C(COLLECTION).Find(bson.M{}).All(&adCampaigns)
 	return adCampaigns, err
 }
 
-// Insert adds an ad campaign into the database
+// Insert adds an ad campaign into the 'ad_campaign' collection
 func (m *AdCampaignStorage) Insert(adCampaign model.AdCampaign) error {
 	err := DB.C(COLLECTION).Insert(&adCampaign)
 	return err
 }
 
-// DeleteAll removes all ad campaigns
+// DeleteAll removes the 'ad_campaign' collection
 func (m *AdCampaignStorage) DeleteAll() error {
 	return DB.C(COLLECTION).DropCollection()
 }

@@ -1,5 +1,7 @@
 package model
 
+// AdCampaign is the model used for inserting an instance of
+// Ad Campaign object to the database
 type AdCampaign struct {
 	ID          int64      `json:"id" bson:"id"`
 	Name        string     `json:"name" bson:"name"`
